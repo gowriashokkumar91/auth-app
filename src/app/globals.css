@@ -2,17 +2,21 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-  --primary: #4f46e5;
-  --primary-glow: rgba(79, 70, 229, 0.3);
+  --foreground: #4e8c1f;
+  --primary: #4e8c1f;
+  --primary-glow: rgba(78, 140, 31, 0.3);
+  --secondary: #ffffff;
+  --accent: #3fa9f5;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #09090b;
-    --foreground: #fafafa;
-    --primary: #6366f1;
-    --primary-glow: rgba(99, 102, 241, 0.2);
+    --foreground: #4e8c1f;
+    --primary: #4e8c1f;
+    --primary-glow: rgba(78, 140, 31, 0.2);
+    --secondary: #1a1a1a;
+    --accent: #3fa9f5;
   }
 }
 
@@ -20,6 +24,8 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
@@ -27,6 +33,7 @@
   --animate-fade-in: fade-in 0.8s ease-out forwards;
   --animate-slide-up: slide-up 0.8s ease-out forwards;
   --animate-glow: glow 2s ease-in-out infinite alternate;
+  --animate-marquee: marquee 35s linear infinite;
 }
 
 @keyframes fade-in {
@@ -58,6 +65,17 @@
   }
 }
 
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(
+      -50%
+    ); /* Using -50% because we will duplicate the content */
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -83,7 +101,7 @@ body {
 }
 
 .text-gradient {
-  background: linear-gradient(to right, #4f46e5, #ec4899);
+  background: linear-gradient(to right, var(--primary), var(--accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -116,4 +134,33 @@ body {
 .Toastify__close-button {
   align-self: center !important;
   margin-left: 12px;
+}
+
+/* Custom B2B Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  opacity: 0.5;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-thumb {
+    background: var(--primary);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+  }
 }

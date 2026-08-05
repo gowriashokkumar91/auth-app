@@ -12,5 +12,6 @@ export const baseApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ["Order", "Profile"],
   endpoints: () => ({}), // Endpoints will be injected by slices
 });

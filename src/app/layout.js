@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "@/providers";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -16,9 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "NexAuth | Secure Authentication",
-  description:
-    "A modern authentication boilerplate built with Next.js, Redux, and Tailwind CSS.",
+  title: "SivaFarm | உழவரிடமிருந்து நேரடியாக உங்கள் இல்லத்திற்கு",
+  description: "Directly from farmers to your home.",
 };
 
 export default function RootLayout({ children }) {
@@ -27,10 +27,11 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-background text-primary">
         <Providers>
           <Navbar />
-          {children}
+          <main className="flex-1 flex flex-col">{children}</main>
+          <Footer />
           <ToastContainer
             position="top-right"
             autoClose={3000}

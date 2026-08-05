@@ -1,14 +1,27 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useRegisterMutation } from "@/redux/slices/auth.slice";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectPath = searchParams.get("redirect") || "/dashboard?tab=profile";
+
   const [registerUser, { isLoading }] = useRegisterMutation();
+  const [showPassword, setShowPassword] = useState(false);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push(redirectPath);
+    }
+  }, [isAuthenticated, router, redirectPath]);
 
   const {
     register,
@@ -23,7 +36,7 @@ export default function RegisterPage() {
       toast.success(res.message);
       reset();
       setTimeout(() => {
-        router.push("/login");
+        router.push(`/login?redirect=${encodeURIComponent(redirectPath)}`);
       }, 1500);
     } catch (error) {
       toast.error(error?.data?.message || "Registration Failed");
@@ -31,32 +44,36 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-73px)] flex justify-center items-center relative overflow-hidden bg-background py-10">
+    <div className="min-h-[calc(100vh-73px)] flex justify-center items-center relative overflow-hidden bg-gradient-to-br from-primary/10 via-background to-accent/10">
       {/* Background decorations */}
       <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] -z-10" />
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-pink-500/10 rounded-full blur-[120px] -z-10" />
 
-      <div className="glass-panel p-8 sm:p-10 rounded-2xl w-full max-w-md animate-slide-up mx-4">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-extrabold tracking-tight mb-2">
+      <div className="glass-panel p-8 sm:p-10 rounded-2xl w-full max-w-md animate-slide-up mx-4 shadow-[0_0_40px_rgba(0,0,0,0.08)] hover:shadow-[0_0_60px_rgba(78,140,31,0.15)] transition-all duration-300 transform hover:-translate-y-1">
+        <div className="text-center mb-10 relative">
+          <h1 className="text-4xl font-extrabold tracking-tight text-primary drop-shadow-sm mb-4">
             Create Account
           </h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
-            Sign up to get started
-          </p>
+          <div className="inline-block p-1.5 px-4 rounded-full bg-accent/10 border border-accent/20 shadow-sm transition-transform hover:scale-105">
+            <p className="text-[13px] font-bold text-primary tracking-wide">
+              உழவரிடமிருந்து நேரடியாக உங்கள் இல்லத்திற்கு
+            </p>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div>
-            <label className="block mb-1.5 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            <label className="block mb-1.5 text-sm font-medium text-primary">
               Full Name
             </label>
-            <input
-              type="text"
-              placeholder="John Doe"
-              className="w-full bg-white/50 dark:bg-black/50 border border-zinc-200 dark:border-zinc-800 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-              {...register("name", { required: "Name is required" })}
-            />
+            <div className="relative group">
+              <input
+                type="text"
+                placeholder="John Doe"
+                className="w-full bg-white/50 dark:bg-black/50 border border-zinc-200 dark:border-zinc-800 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all group-hover:border-accent/50 shadow-sm hover:shadow-md"
+                {...register("name", { required: "Name is required" })}
+              />
+            </div>
             {errors.name && (
               <p className="text-red-500 text-xs mt-1.5 font-medium">
                 {errors.name.message}
@@ -65,21 +82,23 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block mb-1.5 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            <label className="block mb-1.5 text-sm font-medium text-primary">
               Email Address
             </label>
-            <input
-              type="email"
-              placeholder="you@example.com"
-              className="w-full bg-white/50 dark:bg-black/50 border border-zinc-200 dark:border-zinc-800 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Invalid Email",
-                },
-              })}
-            />
+            <div className="relative group">
+              <input
+                type="email"
+                placeholder="you@example.com"
+                className="w-full bg-white/50 dark:bg-black/50 border border-zinc-200 dark:border-zinc-800 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all group-hover:border-accent/50 shadow-sm hover:shadow-md"
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Invalid Email",
+                  },
+                })}
+              />
+            </div>
             {errors.email && (
               <p className="text-red-500 text-xs mt-1.5 font-medium">
                 {errors.email.message}
@@ -88,21 +107,60 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block mb-1.5 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            <label className="block mb-1.5 text-sm font-medium text-primary">
               Password
             </label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              className="w-full bg-white/50 dark:bg-black/50 border border-zinc-200 dark:border-zinc-800 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
-                },
-              })}
-            />
+            <div className="relative group">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                className="w-full bg-white/50 dark:bg-black/50 border border-zinc-200 dark:border-zinc-800 rounded-lg p-3 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all group-hover:border-accent/50 shadow-sm hover:shadow-md"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be at least 6 characters",
+                  },
+                })}
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-zinc-400 hover:text-accent transition-colors focus:outline-none"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                    <line x1="1" y1="1" x2="23" y2="23" />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                )}
+              </button>
+            </div>
             {errors.password && (
               <p className="text-red-500 text-xs mt-1.5 font-medium">
                 {errors.password.message}
@@ -112,7 +170,7 @@ export default function RegisterPage() {
 
           <button
             disabled={isLoading}
-            className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 rounded-lg shadow-[0_4px_14px_0_rgba(79,70,229,0.39)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.23)] transition-all transform hover:-translate-y-0.5 disabled:opacity-70 disabled:hover:translate-y-0 flex justify-center items-center"
+            className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 rounded-lg shadow-[0_4px_14px_0_rgba(78,140,31,0.39)] hover:shadow-[0_6px_20px_rgba(78,140,31,0.23)] transition-all transform hover:-translate-y-0.5 disabled:opacity-70 disabled:hover:translate-y-0 flex justify-center items-center"
           >
             {isLoading ? (
               <svg
@@ -141,11 +199,11 @@ export default function RegisterPage() {
           </button>
         </form>
 
-        <p className="text-center text-sm text-zinc-500 dark:text-zinc-400 mt-6">
+        <p className="text-center text-sm text-primary/70 mt-6">
           Already have an account?{" "}
           <Link
             href="/login"
-            className="text-primary font-medium hover:underline"
+            className="text-accent font-medium hover:underline"
           >
             Sign in
           </Link>
