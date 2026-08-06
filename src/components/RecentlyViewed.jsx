@@ -10,12 +10,13 @@ export default function RecentlyViewed() {
   const recentlyViewedItems = useSelector(
     (state) => state.recentlyViewed?.items || []
   );
+  const isAuthenticated = useSelector((state) => state.auth?.isAuthenticated);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted || recentlyViewedItems.length === 0) {
+  if (!mounted || !isAuthenticated || recentlyViewedItems.length === 0) {
     return null;
   }
 
