@@ -181,7 +181,7 @@ export default function ProductCard({ product, simplified = false }) {
             }}
           >
             <div
-              className="bg-white dark:bg-zinc-900 p-6 sm:p-8 rounded-3xl w-full max-w-md shadow-2xl flex flex-col items-center animate-slide-up border border-primary/10 relative"
+              className="bg-white p-6 sm:p-8 rounded-3xl w-full max-w-md shadow-2xl flex flex-col items-center animate-slide-up border border-primary/10 relative"
               onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
             >
               <button

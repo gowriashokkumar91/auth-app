@@ -75,7 +75,7 @@ export default function LoginPage() {
               <input
                 type="email"
                 placeholder="you@example.com"
-                className="w-full bg-white/50 dark:bg-black/50 border border-zinc-200 dark:border-zinc-800 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all group-hover:border-accent/50 shadow-sm hover:shadow-md"
+                className="w-full bg-white/50 border border-zinc-200 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all group-hover:border-accent/50 shadow-sm hover:shadow-md"
                 {...register("email", { required: "Email is required" })}
               />
             </div>
@@ -94,7 +94,7 @@ export default function LoginPage() {
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
-                className="w-full bg-white/50 dark:bg-black/50 border border-zinc-200 dark:border-zinc-800 rounded-lg p-3 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all group-hover:border-accent/50 shadow-sm hover:shadow-md"
+                className="w-full bg-white/50 border border-zinc-200 rounded-lg p-3 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all group-hover:border-accent/50 shadow-sm hover:shadow-md"
                 {...register("password", { required: "Password is required" })}
               />
               <button

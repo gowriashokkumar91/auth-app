@@ -14,7 +14,7 @@ export default function Footer() {
   return (
     <footer
       id="contact-footer"
-      className="mt-auto pt-12 pb-8 border-t border-zinc-200 dark:border-zinc-800 bg-secondary"
+      className="mt-auto pt-12 pb-8 border-t border-zinc-200 bg-secondary"
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
@@ -211,7 +211,7 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="pt-8 border-t border-zinc-200 dark:border-zinc-800 text-center">
+        <div className="pt-8 border-t border-zinc-200 text-center">
           <p className="text-sm font-medium text-primary/70">
             &copy; {new Date().getFullYear()} Sivamazhil. உழவரிடமிருந்து
             நேரடியாக உங்கள் இல்லத்திற்கு

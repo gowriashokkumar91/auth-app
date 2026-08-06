@@ -133,7 +133,7 @@ export default function Home() {
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {/* Card 1 */}
-          <div className="group relative flex flex-col items-start text-left p-5 sm:p-6 rounded-3xl bg-white dark:bg-zinc-900 shadow-[0_4px_20px_rgb(0,0,0,0.04)] border border-zinc-100 dark:border-zinc-800 hover:shadow-[0_8px_30px_rgba(78,140,31,0.1)] hover:-translate-y-1.5 transition-all duration-500 overflow-hidden z-10">
+          <div className="group relative flex flex-col items-start text-left p-5 sm:p-6 rounded-3xl bg-white shadow-[0_4px_20px_rgb(0,0,0,0.04)] border border-zinc-100 hover:shadow-[0_8px_30px_rgba(78,140,31,0.1)] hover:-translate-y-1.5 transition-all duration-500 overflow-hidden z-10">
             <div className="absolute top-0 right-0 w-24 h-24 bg-accent/10 rounded-full blur-2xl -z-10 group-hover:bg-accent/20 transition-colors duration-500" />
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-accent/10 to-accent/5 text-accent rounded-[14px] flex items-center justify-center mb-4 sm:mb-5 group-hover:scale-110 group-hover:bg-accent group-hover:text-white transition-all duration-500 shadow-sm border border-accent/10">
               <svg
@@ -160,7 +160,7 @@ export default function Home() {
           </div>
 
           {/* Card 2 */}
-          <div className="group relative flex flex-col items-start text-left p-5 sm:p-6 rounded-3xl bg-white dark:bg-zinc-900 shadow-[0_4px_20px_rgb(0,0,0,0.04)] border border-zinc-100 dark:border-zinc-800 hover:shadow-[0_8px_30px_rgba(78,140,31,0.1)] hover:-translate-y-1.5 transition-all duration-500 overflow-hidden z-10">
+          <div className="group relative flex flex-col items-start text-left p-5 sm:p-6 rounded-3xl bg-white shadow-[0_4px_20px_rgb(0,0,0,0.04)] border border-zinc-100 hover:shadow-[0_8px_30px_rgba(78,140,31,0.1)] hover:-translate-y-1.5 transition-all duration-500 overflow-hidden z-10">
             <div className="absolute top-0 right-0 w-24 h-24 bg-accent/10 rounded-full blur-2xl -z-10 group-hover:bg-accent/20 transition-colors duration-500" />
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-accent/10 to-accent/5 text-accent rounded-[14px] flex items-center justify-center mb-4 sm:mb-5 group-hover:scale-110 group-hover:bg-accent group-hover:text-white transition-all duration-500 shadow-sm border border-accent/10">
               <svg
@@ -190,7 +190,7 @@ export default function Home() {
           </div>
 
           {/* Card 3 */}
-          <div className="group relative flex flex-col items-start text-left p-5 sm:p-6 rounded-3xl bg-white dark:bg-zinc-900 shadow-[0_4px_20px_rgb(0,0,0,0.04)] border border-zinc-100 dark:border-zinc-800 hover:shadow-[0_8px_30px_rgba(78,140,31,0.1)] hover:-translate-y-1.5 transition-all duration-500 overflow-hidden z-10">
+          <div className="group relative flex flex-col items-start text-left p-5 sm:p-6 rounded-3xl bg-white shadow-[0_4px_20px_rgb(0,0,0,0.04)] border border-zinc-100 hover:shadow-[0_8px_30px_rgba(78,140,31,0.1)] hover:-translate-y-1.5 transition-all duration-500 overflow-hidden z-10">
             <div className="absolute top-0 right-0 w-24 h-24 bg-accent/10 rounded-full blur-2xl -z-10 group-hover:bg-accent/20 transition-colors duration-500" />
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-accent/10 to-accent/5 text-accent rounded-[14px] flex items-center justify-center mb-4 sm:mb-5 group-hover:scale-110 group-hover:bg-accent group-hover:text-white transition-all duration-500 shadow-sm border border-accent/10">
               <svg

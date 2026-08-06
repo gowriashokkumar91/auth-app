@@ -507,7 +507,7 @@ export default function DashboardPage() {
           </button>
         )}
       </div>
-      <div className="bg-white dark:bg-zinc-900 border border-primary/10 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
+      <div className="bg-white border border-primary/10 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/5 rounded-full blur-2xl"></div>
         <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-accent/5 rounded-full blur-2xl"></div>
@@ -520,7 +520,7 @@ export default function DashboardPage() {
               onClick={() => fileInputRef.current?.click()}
             >
               <div
-                className={`w-32 h-32 rounded-full flex items-center justify-center text-white text-5xl font-bold shadow-lg shadow-primary/20 border-4 border-white dark:border-zinc-800 overflow-hidden relative ${!user?.profileImage && "bg-gradient-to-br from-primary to-primary/60"}`}
+                className={`w-32 h-32 rounded-full flex items-center justify-center text-white text-5xl font-bold shadow-lg shadow-primary/20 border-4 border-white overflow-hidden relative ${!user?.profileImage && "bg-gradient-to-br from-primary to-primary/60"}`}
               >
                 {user?.profileImage ? (
                   <Image
@@ -616,7 +616,7 @@ export default function DashboardPage() {
                         setProfileForm({ ...profileForm, name: e.target.value })
                       }
                       required
-                      className="w-full bg-white dark:bg-zinc-800 border-2 border-primary/20 rounded-xl py-2.5 px-4 text-primary focus:outline-none focus:border-primary transition-all font-medium"
+                      className="w-full bg-white border-2 border-primary/20 rounded-xl py-2.5 px-4 text-primary focus:outline-none focus:border-primary transition-all font-medium"
                     />
                   </div>
 
@@ -635,7 +635,7 @@ export default function DashboardPage() {
                         })
                       }
                       placeholder="+91 98765 43210"
-                      className="w-full bg-white dark:bg-zinc-800 border-2 border-primary/20 rounded-xl py-2.5 px-4 text-primary focus:outline-none focus:border-primary transition-all font-medium"
+                      className="w-full bg-white border-2 border-primary/20 rounded-xl py-2.5 px-4 text-primary focus:outline-none focus:border-primary transition-all font-medium"
                     />
                   </div>
 
@@ -648,7 +648,7 @@ export default function DashboardPage() {
                       type="email"
                       value={user?.email || ""}
                       disabled
-                      className="w-full bg-secondary/30 dark:bg-zinc-800/50 border-2 border-transparent rounded-xl py-2.5 px-4 text-primary/60 cursor-not-allowed font-medium"
+                      className="w-full bg-secondary/30 border-2 border-transparent rounded-xl py-2.5 px-4 text-primary/60 cursor-not-allowed font-medium"
                     />
                   </div>
                 </div>
@@ -688,7 +688,7 @@ export default function DashboardPage() {
                           })
                         }
                         placeholder="12A"
-                        className="w-full bg-white dark:bg-zinc-800 border-2 border-primary/20 rounded-xl py-2.5 px-4 text-primary focus:outline-none focus:border-primary transition-all font-medium"
+                        className="w-full bg-white border-2 border-primary/20 rounded-xl py-2.5 px-4 text-primary focus:outline-none focus:border-primary transition-all font-medium"
                       />
                     </div>
 
@@ -709,7 +709,7 @@ export default function DashboardPage() {
                           })
                         }
                         placeholder="Main St"
-                        className="w-full bg-white dark:bg-zinc-800 border-2 border-primary/20 rounded-xl py-2.5 px-4 text-primary focus:outline-none focus:border-primary transition-all font-medium"
+                        className="w-full bg-white border-2 border-primary/20 rounded-xl py-2.5 px-4 text-primary focus:outline-none focus:border-primary transition-all font-medium"
                       />
                     </div>
 
@@ -730,7 +730,7 @@ export default function DashboardPage() {
                           })
                         }
                         placeholder="Mumbai"
-                        className="w-full bg-white dark:bg-zinc-800 border-2 border-primary/20 rounded-xl py-2.5 px-4 text-primary focus:outline-none focus:border-primary transition-all font-medium"
+                        className="w-full bg-white border-2 border-primary/20 rounded-xl py-2.5 px-4 text-primary focus:outline-none focus:border-primary transition-all font-medium"
                       />
                     </div>
 
@@ -751,7 +751,7 @@ export default function DashboardPage() {
                           })
                         }
                         placeholder="Maharashtra"
-                        className="w-full bg-white dark:bg-zinc-800 border-2 border-primary/20 rounded-xl py-2.5 px-4 text-primary focus:outline-none focus:border-primary transition-all font-medium"
+                        className="w-full bg-white border-2 border-primary/20 rounded-xl py-2.5 px-4 text-primary focus:outline-none focus:border-primary transition-all font-medium"
                       />
                     </div>
 
@@ -772,7 +772,7 @@ export default function DashboardPage() {
                           })
                         }
                         placeholder="400001"
-                        className="w-full bg-white dark:bg-zinc-800 border-2 border-primary/20 rounded-xl py-2.5 px-4 text-primary focus:outline-none focus:border-primary transition-all font-medium"
+                        className="w-full bg-white border-2 border-primary/20 rounded-xl py-2.5 px-4 text-primary focus:outline-none focus:border-primary transition-all font-medium"
                       />
                     </div>
 
@@ -793,7 +793,7 @@ export default function DashboardPage() {
                           })
                         }
                         placeholder="India"
-                        className="w-full bg-white dark:bg-zinc-800 border-2 border-primary/20 rounded-xl py-2.5 px-4 text-primary focus:outline-none focus:border-primary transition-all font-medium"
+                        className="w-full bg-white border-2 border-primary/20 rounded-xl py-2.5 px-4 text-primary focus:outline-none focus:border-primary transition-all font-medium"
                       />
                     </div>
                   </div>
@@ -803,7 +803,7 @@ export default function DashboardPage() {
               <div className="bg-transparent mt-2">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-8 gap-x-12">
                   <div className="flex items-start gap-4">
-                    <div className="p-2.5 bg-primary/5 dark:bg-primary/10 text-primary rounded-xl shrink-0 mt-1">
+                    <div className="p-2.5 bg-primary/5 text-primary rounded-xl shrink-0 mt-1">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="18"
@@ -828,7 +828,7 @@ export default function DashboardPage() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="p-2.5 bg-primary/5 dark:bg-primary/10 text-primary rounded-xl shrink-0 mt-1">
+                    <div className="p-2.5 bg-primary/5 text-primary rounded-xl shrink-0 mt-1">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="18"
@@ -856,7 +856,7 @@ export default function DashboardPage() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="p-2.5 bg-primary/5 dark:bg-primary/10 text-primary rounded-xl shrink-0 mt-1">
+                    <div className="p-2.5 bg-primary/5 text-primary rounded-xl shrink-0 mt-1">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="18"
@@ -903,7 +903,7 @@ export default function DashboardPage() {
                   </div>
 
                   <div className="sm:col-span-2 pt-6 border-t border-primary/5 flex items-start gap-4">
-                    <div className="p-2.5 bg-primary/5 dark:bg-primary/10 text-primary rounded-xl shrink-0 mt-1">
+                    <div className="p-2.5 bg-primary/5 text-primary rounded-xl shrink-0 mt-1">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="18"
@@ -958,7 +958,7 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      <div className="bg-white dark:bg-zinc-900 border border-primary/10 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
+      <div className="bg-white border border-primary/10 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
         {/* Decorative corner element */}
         <div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/5 rounded-full blur-2xl"></div>
 
@@ -1247,7 +1247,7 @@ export default function DashboardPage() {
     if (!selectedOrder) return null;
     return (
       <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-        <div className="bg-white dark:bg-zinc-900 w-full max-w-2xl rounded-3xl shadow-2xl border border-primary/10 overflow-hidden flex flex-col max-h-[90vh]">
+        <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-primary/10 overflow-hidden flex flex-col max-h-[90vh]">
           <div className="p-6 border-b border-primary/10 flex justify-between items-center bg-primary/5">
             <div>
               <h3 className="text-xl font-bold flex items-center gap-3">
@@ -1270,7 +1270,7 @@ export default function DashboardPage() {
             </div>
             <button
               onClick={() => setSelectedOrder(null)}
-              className="w-10 h-10 bg-white dark:bg-zinc-800 rounded-full flex items-center justify-center text-primary/60 hover:text-red-500 hover:bg-red-500/10 transition-colors shadow-sm"
+              className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-primary/60 hover:text-red-500 hover:bg-red-500/10 transition-colors shadow-sm"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -1298,7 +1298,7 @@ export default function DashboardPage() {
                     key={i}
                     className="flex gap-4 p-3 rounded-xl border border-primary/5 bg-primary/5 items-center"
                   >
-                    <div className="w-16 h-16 bg-white dark:bg-zinc-800 rounded-lg flex items-center justify-center shrink-0">
+                    <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shrink-0">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -1383,7 +1383,7 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="p-4 border-t border-primary/10 bg-zinc-50 dark:bg-zinc-900/50 flex justify-end">
+          <div className="p-4 border-t border-primary/10 bg-zinc-50 flex justify-end">
             <button
               onClick={() => setSelectedOrder(null)}
               className="px-6 py-2.5 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-colors shadow-sm"
@@ -1544,7 +1544,7 @@ export default function DashboardPage() {
             <div className="flex w-full gap-3">
               <button
                 onClick={() => setShowLogoutConfirm(false)}
-                className="flex-1 py-3 px-4 rounded-xl font-medium border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                className="flex-1 py-3 px-4 rounded-xl font-medium border border-zinc-200 hover:bg-zinc-100 transition-colors"
               >
                 Cancel
               </button>

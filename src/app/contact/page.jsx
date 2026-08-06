@@ -31,12 +31,12 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-73px)] py-12 px-4 sm:px-6 lg:px-8 bg-zinc-50 dark:bg-zinc-950 flex flex-col items-center">
+    <div className="min-h-[calc(100vh-73px)] py-12 px-4 sm:px-6 lg:px-8 bg-zinc-50 flex flex-col items-center">
       <div className="w-full max-w-4xl text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold text-primary mb-4 tracking-tight">
           Contact Us
         </h1>
-        <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
+        <p className="text-lg text-zinc-600 max-w-2xl mx-auto">
           Have any queries or need assistance? We are here to help! Fill out the
           form below or reach us directly.
         </p>
@@ -45,7 +45,7 @@ export default function ContactPage() {
       <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-start">
         {/* Contact Information */}
         <div className="flex flex-col gap-8">
-          <div className="bg-white dark:bg-zinc-900 rounded-3xl p-8 shadow-sm border border-zinc-200 dark:border-zinc-800">
+          <div className="bg-white rounded-3xl p-8 shadow-sm border border-zinc-200 ">
             <h3 className="text-2xl font-bold text-primary mb-6">
               Get in Touch
             </h3>
@@ -69,12 +69,10 @@ export default function ContactPage() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                    Email
-                  </p>
+                  <p className="text-sm font-medium text-zinc-500 ">Email</p>
                   <a
                     href="mailto:sivamani242km@gmail.com"
-                    className="text-lg font-bold text-zinc-900 dark:text-zinc-100 hover:text-primary transition-colors"
+                    className="text-lg font-bold text-zinc-900 hover:text-primary transition-colors"
                   >
                     sivamani242km@gmail.com
                   </a>
@@ -98,12 +96,12 @@ export default function ContactPage() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                  <p className="text-sm font-medium text-zinc-500 ">
                     Phone & WhatsApp
                   </p>
                   <a
                     href="tel:7812886942"
-                    className="text-lg font-bold text-zinc-900 dark:text-zinc-100 hover:text-primary transition-colors"
+                    className="text-lg font-bold text-zinc-900 hover:text-primary transition-colors"
                   >
                     +91 7812886942
                   </a>
@@ -114,12 +112,12 @@ export default function ContactPage() {
         </div>
 
         {/* Contact Form */}
-        <div className="bg-white dark:bg-zinc-900 rounded-3xl p-8 shadow-sm border border-zinc-200 dark:border-zinc-800">
+        <div className="bg-white rounded-3xl p-8 shadow-sm border border-zinc-200 ">
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <div>
               <label
                 htmlFor="name"
-                className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5"
+                className="block text-sm font-semibold text-zinc-700 mb-1.5"
               >
                 Your Name
               </label>
@@ -130,7 +128,7 @@ export default function ContactPage() {
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-zinc-900 dark:text-zinc-100"
+                className="w-full px-4 py-3 rounded-xl border border-zinc-300 bg-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-zinc-900 "
                 placeholder="John Doe"
               />
             </div>
@@ -138,7 +136,7 @@ export default function ContactPage() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5"
+                className="block text-sm font-semibold text-zinc-700 mb-1.5"
               >
                 Email Address
               </label>
@@ -149,7 +147,7 @@ export default function ContactPage() {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-zinc-900 dark:text-zinc-100"
+                className="w-full px-4 py-3 rounded-xl border border-zinc-300 bg-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-zinc-900 "
                 placeholder="john@example.com"
               />
             </div>
@@ -157,7 +155,7 @@ export default function ContactPage() {
             <div>
               <label
                 htmlFor="subject"
-                className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5"
+                className="block text-sm font-semibold text-zinc-700 mb-1.5"
               >
                 Subject
               </label>
@@ -168,7 +166,7 @@ export default function ContactPage() {
                 required
                 value={formData.subject}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-zinc-900 dark:text-zinc-100"
+                className="w-full px-4 py-3 rounded-xl border border-zinc-300 bg-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-zinc-900 "
                 placeholder="How can we help you?"
               />
             </div>
@@ -176,7 +174,7 @@ export default function ContactPage() {
             <div>
               <label
                 htmlFor="message"
-                className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5"
+                className="block text-sm font-semibold text-zinc-700 mb-1.5"
               >
                 Message
               </label>
@@ -187,7 +185,7 @@ export default function ContactPage() {
                 rows="4"
                 value={formData.message}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none text-zinc-900 dark:text-zinc-100"
+                className="w-full px-4 py-3 rounded-xl border border-zinc-300 bg-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none text-zinc-900 "
                 placeholder="Write your message here..."
               />
             </div>

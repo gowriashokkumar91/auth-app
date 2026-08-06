@@ -55,8 +55,8 @@ export default function CategoryMarquee() {
       </div>
       <div className="w-full overflow-hidden relative">
         {/* Left and right fade gradients for a smooth scrolling edge */}
-        <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-r from-white dark:from-[#09090b] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-l from-white dark:from-[#09090b] to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-r from-white ] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-l from-white ] to-transparent z-10 pointer-events-none" />
 
         <div className="flex w-[300%] md:w-[200%] animate-marquee">
           {marqueeItems.map((category, index) => (

@@ -45,7 +45,7 @@ export default function CategoryProductsPage() {
           <p className="text-xl font-bold">Loading {title.toLowerCase()}...</p>
         </div>
       ) : products.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-zinc-500 bg-zinc-50 dark:bg-zinc-900 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800">
+        <div className="flex flex-col items-center justify-center py-20 text-zinc-500 bg-zinc-50 rounded-3xl border border-dashed border-zinc-200 ">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="48"
