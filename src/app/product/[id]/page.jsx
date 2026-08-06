@@ -222,7 +222,14 @@ export default function ProductDetailPage() {
             <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-primary/10 z-50 lg:static lg:bg-transparent lg:border-t-0 lg:p-0 flex gap-8 mt-2">
               <button
                 onClick={handleCartClick}
-                className="flex-1 bg-white border-2 border-accent text-accent py-3.5 rounded-xl font-bold text-lg hover:bg-accent/5 transition-colors flex items-center justify-center gap-2 shadow-sm"
+                disabled={
+                  product.stock <= 0 || product.status === "Out of Stock"
+                }
+                className={`flex-1 bg-white border-2 border-accent text-accent py-3.5 rounded-xl font-bold text-lg flex items-center justify-center gap-2 shadow-sm transition-colors ${
+                  product.stock <= 0 || product.status === "Out of Stock"
+                    ? "opacity-50 cursor-not-allowed hover:bg-white"
+                    : "hover:bg-accent/5"
+                }`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -241,7 +248,14 @@ export default function ProductDetailPage() {
               </button>
               <button
                 onClick={handleBuyNow}
-                className="flex-1 bg-accent hover:bg-accent/90 text-white py-3.5 rounded-xl font-bold text-lg transition-colors flex items-center justify-center gap-2 shadow-lg shadow-accent/30"
+                disabled={
+                  product.stock <= 0 || product.status === "Out of Stock"
+                }
+                className={`flex-1 bg-accent text-white py-3.5 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-colors ${
+                  product.stock <= 0 || product.status === "Out of Stock"
+                    ? "opacity-50 cursor-not-allowed shadow-none"
+                    : "hover:bg-accent/90 shadow-lg shadow-accent/30"
+                }`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -301,49 +315,63 @@ export default function ProductDetailPage() {
                     <span className="text-sm font-extrabold text-[#5B8C2A]">
                       Quantity:
                     </span>
-                    <div className="flex items-center border border-gray-200 rounded-xl bg-white w-fit overflow-hidden shadow-sm">
-                      <button
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="w-10 h-10 flex items-center justify-center text-[#5B8C2A] hover:bg-[#5B8C2A]/5 transition-colors"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                          strokeLinecap="round"
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center border border-gray-200 rounded-xl bg-white w-fit overflow-hidden shadow-sm">
+                        <button
+                          onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                          className="w-10 h-10 flex items-center justify-center text-[#5B8C2A] hover:bg-[#5B8C2A]/5 transition-colors"
                         >
-                          <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                      </button>
-                      <span className="w-10 text-center font-extrabold text-[#4F7942] text-lg">
-                        {quantity}
-                      </span>
-                      <button
-                        onClick={() =>
-                          setQuantity(
-                            Math.min(product.stock || 10, quantity + 1)
-                          )
-                        }
-                        className="w-10 h-10 flex items-center justify-center text-[#5B8C2A] hover:bg-[#5B8C2A]/5 transition-colors"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                          strokeLinecap="round"
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            strokeLinecap="round"
+                          >
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                          </svg>
+                        </button>
+                        <span className="w-10 text-center font-extrabold text-[#4F7942] text-lg">
+                          {quantity}
+                        </span>
+                        <button
+                          onClick={() =>
+                            setQuantity(
+                              Math.min(product.stock || 10, quantity + 1)
+                            )
+                          }
+                          className="w-10 h-10 flex items-center justify-center text-[#5B8C2A] hover:bg-[#5B8C2A]/5 transition-colors"
                         >
-                          <line x1="12" y1="5" x2="12" y2="19"></line>
-                          <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                      </button>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            strokeLinecap="round"
+                          >
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                          </svg>
+                        </button>
+                      </div>
+                      <div className="text-sm font-bold ml-2">
+                        {product.stock <= 0 ||
+                        product.status === "Out of Stock" ? (
+                          <span className="text-red-500 bg-red-50 px-2 py-1 rounded-md border border-red-100">
+                            Out of Stock
+                          </span>
+                        ) : (
+                          <span className="text-[#5B8C2A] bg-[#5B8C2A]/10 px-2 py-1 rounded-md border border-[#5B8C2A]/20">
+                            {product.stock} {product.unit} left
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

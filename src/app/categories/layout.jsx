@@ -1,7 +1,7 @@
 import CategorySidebar from "@/components/CategorySidebar";
 
 export const metadata = {
-  title: "Categories | SivaFarm",
+  title: "Categories | Sivamazhil",
   description: "Explore all our farm fresh categories.",
 };
 

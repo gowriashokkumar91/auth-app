@@ -20,7 +20,7 @@ export default function RecentlyViewed() {
   }
 
   return (
-    <section className="w-full px-4 sm:px-8 lg:px-12 py-8 bg-white dark:bg-zinc-950 overflow-hidden">
+    <section className="w-full bg-transparent overflow-hidden">
       <div className="w-full">
         <div className="flex justify-between items-end mb-6">
           <div>
@@ -54,11 +54,12 @@ export default function RecentlyViewed() {
           </Link>
         </div>
 
-        <div className="flex gap-4 sm:gap-5 overflow-hidden">
+        <div className="flex gap-3 sm:gap-5 overflow-hidden">
           {recentlyViewedItems.slice(0, 8).map((product, idx) => (
-            <div
+            <Link
+              href={`/product/${product._id || product.id}`}
               key={`${product.id || product._id || "rv"}-${idx}`}
-              className="min-w-[120px] sm:min-w-[150px] max-w-[120px] sm:max-w-[150px] flex-shrink-0 snap-start group cursor-pointer flex flex-col"
+              className="min-w-[100px] sm:min-w-[150px] max-w-[100px] sm:max-w-[150px] flex-shrink-0 snap-start group cursor-pointer flex flex-col"
               title={product.name}
             >
               <div className="w-full aspect-square bg-primary/5 rounded-2xl shadow-sm hover:shadow-md hover:shadow-primary/10 transition-all duration-300 border border-primary/10 overflow-hidden relative mb-2">
@@ -66,15 +67,15 @@ export default function RecentlyViewed() {
                   src={product.image}
                   alt={product.name}
                   fill
-                  sizes="(max-width: 768px) 120px, 150px"
+                  sizes="(max-width: 768px) 100px, 150px"
                   className="object-cover group-hover:scale-110 transition-transform duration-500"
                   unoptimized
                 />
               </div>
-              <h4 className="text-primary font-bold text-[11px] sm:text-xs truncate w-full text-center group-hover:text-accent transition-colors">
+              <h4 className="text-primary font-bold text-[10px] sm:text-xs truncate w-full text-center group-hover:text-accent transition-colors">
                 {product.name}
               </h4>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

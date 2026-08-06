@@ -45,7 +45,7 @@ export default function CategoryMarquee() {
 
   return (
     <div className="w-full py-16 overflow-hidden relative">
-      <div className="w-full px-4 sm:px-8 lg:px-12 mb-8 text-left relative z-10">
+      <div className="w-full mb-8 text-left relative z-10">
         <h2 className="text-3xl md:text-4xl font-extrabold text-primary mb-2">
           Explore Our Categories
         </h2>
@@ -55,15 +55,15 @@ export default function CategoryMarquee() {
       </div>
       <div className="w-full overflow-hidden relative">
         {/* Left and right fade gradients for a smooth scrolling edge */}
-        <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-24 bg-gradient-to-r from-white dark:from-[#09090b] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-24 bg-gradient-to-l from-white dark:from-[#09090b] to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-r from-white dark:from-[#09090b] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-l from-white dark:from-[#09090b] to-transparent z-10 pointer-events-none" />
 
         <div className="flex w-[300%] md:w-[200%] animate-marquee">
           {marqueeItems.map((category, index) => (
             <Link
               href={`/categories/${category.name.toLowerCase().replace(/ & /g, "-").replace(/\s+/g, "-")}`}
               key={index}
-              className="flex flex-col items-center justify-center flex-1 min-w-[140px] sm:min-w-[180px] mx-2 sm:mx-4 group cursor-pointer"
+              className="flex flex-col items-center justify-center min-w-[120px] sm:min-w-[160px] mx-2 sm:mx-3 group cursor-pointer"
             >
               <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl overflow-hidden mb-4 shadow-lg group-hover:scale-105 group-hover:shadow-primary/30 transition-all duration-300 relative">
                 <Image

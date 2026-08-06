@@ -59,7 +59,7 @@ export default function ProductCard({ product, simplified = false }) {
 
   return (
     <div className="group flex flex-col bg-white rounded-3xl p-4 sm:p-5 shadow-sm hover:shadow-xl hover:shadow-primary/20 transition-all duration-300 border border-primary/10 overflow-hidden relative">
-      {!simplified && discountText && (
+      {discountText && (
         <div className="absolute top-0 right-0 bg-accent text-white font-bold text-[10px] px-3 py-1 rounded-bl-xl z-10 shadow-sm">
           {discountText}
         </div>
@@ -102,6 +102,17 @@ export default function ProductCard({ product, simplified = false }) {
                 ₹{originalPrice} / {product.unit}
               </span>
             )}
+            <div className="mt-1.5">
+              {product.stock <= 0 || product.status === "Out of Stock" ? (
+                <span className="text-[10px] font-bold text-red-500 bg-red-50 border border-red-100 px-2 py-0.5 rounded">
+                  Out of Stock
+                </span>
+              ) : (
+                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded">
+                  {product.stock} {product.unit} available
+                </span>
+              )}
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <button

@@ -3,8 +3,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
 import {
   BarChart,
   Bar,
@@ -83,91 +81,129 @@ export default function AdminDashboardPage() {
 
   const recentTransactions = stats.recentSales;
 
-  const handleExport = () => {
-    const doc = new jsPDF();
+  const handleExportExcel = async () => {
+    try {
+      const ExcelJS = (await import("exceljs")).default;
+      const { saveAs } = await import("file-saver");
 
-    // Header
-    doc.setFontSize(22);
-    doc.setTextColor(34, 197, 94); // Tailwind emerald-500
-    doc.text("SivaFarm", 14, 20);
+      const workbook = new ExcelJS.Workbook();
+      const sheet = workbook.addWorksheet("Dashboard Report");
 
-    doc.setFontSize(16);
-    doc.setTextColor(51, 65, 85); // Tailwind slate-700
-    doc.text("Admin Dashboard Report", 14, 30);
+      // Title & Date
+      sheet.mergeCells("A1:D1");
+      sheet.getCell("A1").value = "Sivamazhil Admin Dashboard Report";
+      sheet.getCell("A1").font = {
+        size: 16,
+        bold: true,
+        color: { argb: "FF10B981" },
+      }; // Emerald 500
+      sheet.getCell("A1").alignment = {
+        vertical: "middle",
+        horizontal: "center",
+      };
 
-    doc.setFontSize(11);
-    doc.setTextColor(100, 116, 139); // Tailwind slate-500
-    doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 38);
+      sheet.mergeCells("A2:D2");
+      sheet.getCell("A2").value =
+        `Generated on: ${new Date().toLocaleString()}`;
+      sheet.getCell("A2").font = {
+        size: 11,
+        italic: true,
+        color: { argb: "FF64748B" },
+      }; // Slate 500
+      sheet.getCell("A2").alignment = {
+        vertical: "middle",
+        horizontal: "center",
+      };
 
-    // Summary Metrics Table
-    autoTable(doc, {
-      startY: 45,
-      head: [["Metric", "Value"]],
-      body: [
-        ["Total Revenue", stats.totalRevenue.toString()],
-        ["Total Orders", stats.totalOrders.toString()],
-        ["Active Users", stats.activeUsers.toString()],
-        ["Refunds", stats.refunds.toString()],
-      ],
-      theme: "grid",
-      headStyles: { fillColor: [34, 197, 94] },
-      margin: { top: 10 },
-    });
+      sheet.addRow([]); // Empty Row 3
 
-    // All Orders Table
-    const nextY = doc.lastAutoTable.finalY + 15;
-    doc.setFontSize(14);
-    doc.setTextColor(51, 65, 85);
-    doc.text("All Orders", 14, nextY);
+      // Metrics Table Headers
+      sheet.addRow(["Metric", "Value"]); // Row 4
+      const metricHeader = sheet.getRow(4);
+      metricHeader.font = { bold: true, color: { argb: "FFFFFFFF" } };
+      metricHeader.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FF10B981" },
+      }; // Emerald 500
+      metricHeader.alignment = { horizontal: "center" };
 
-    const salesBody = recentTransactions.map((t) => [
-      t.customer,
-      t.email,
-      t.amount,
-      t.status,
-    ]);
+      // Metrics Data
+      const m1 = sheet.addRow(["Total Revenue", stats.totalRevenue]);
+      const m2 = sheet.addRow(["Total Orders", stats.totalOrders]);
+      const m3 = sheet.addRow(["Active Users", stats.activeUsers]);
+      const m4 = sheet.addRow(["Refunds", stats.refunds]);
 
-    autoTable(doc, {
-      startY: nextY + 5,
-      head: [["Customer", "Email", "Amount", "Status"]],
-      body:
-        salesBody.length > 0 ? salesBody : [["No recent sales", "", "", ""]],
-      theme: "striped",
-      headStyles: { fillColor: [34, 197, 94] },
-    });
+      [m1, m2, m3, m4].forEach((row) => {
+        row.getCell(1).alignment = { horizontal: "left" };
+        row.getCell(2).alignment = { horizontal: "right" };
+      });
 
-    // Save PDF
-    doc.save("sivafarm-dashboard-report.pdf");
-    toast.success("Report downloaded successfully!");
+      sheet.addRow([]); // Empty Row 9
+
+      // Orders Header
+      const orderTitleRow = sheet.addRow(["Recent Orders"]); // Row 10
+      orderTitleRow.font = {
+        size: 14,
+        bold: true,
+        color: { argb: "FF0F172A" },
+      };
+      sheet.mergeCells(`A${orderTitleRow.number}:D${orderTitleRow.number}`);
+      orderTitleRow.alignment = { horizontal: "left" };
+
+      // Orders Table Headers
+      sheet.addRow(["Customer", "Email", "Amount", "Status"]); // Row 11
+      const orderHeader = sheet.getRow(11);
+      orderHeader.font = { bold: true, color: { argb: "FFFFFFFF" } };
+      orderHeader.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FF3B82F6" },
+      }; // Blue 500
+      orderHeader.alignment = { horizontal: "center" };
+
+      // Orders Data
+      recentTransactions.forEach((t) => {
+        const row = sheet.addRow([t.customer, t.email, t.amount, t.status]);
+        row.alignment = { horizontal: "center" };
+        row.getCell(1).alignment = { horizontal: "left" };
+        row.getCell(2).alignment = { horizontal: "left" };
+      });
+
+      // Set Column Widths
+      sheet.getColumn(1).width = 25;
+      sheet.getColumn(2).width = 35;
+      sheet.getColumn(3).width = 15;
+      sheet.getColumn(4).width = 15;
+
+      // Add Borders
+      sheet.eachRow((row, rowNumber) => {
+        row.eachCell((cell) => {
+          if (rowNumber >= 4 && cell.value !== null && cell.value !== "") {
+            cell.border = {
+              top: { style: "thin", color: { argb: "FFE2E8F0" } },
+              left: { style: "thin", color: { argb: "FFE2E8F0" } },
+              bottom: { style: "thin", color: { argb: "FFE2E8F0" } },
+              right: { style: "thin", color: { argb: "FFE2E8F0" } },
+            };
+          }
+        });
+      });
+
+      // Generate File & Save
+      const buffer = await workbook.xlsx.writeBuffer();
+      saveAs(new Blob([buffer]), "sivamazhil-dashboard-report.xlsx");
+      toast.success("Styled Excel report downloaded successfully!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to generate styled Excel report");
+    }
   };
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="flex justify-end gap-4">
-        <button
-          onClick={handleExport}
-          className="bg-primary/10 hover:bg-primary/20 text-primary font-bold py-2.5 px-6 rounded-xl transition-colors shadow-sm flex items-center gap-2 group"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            className="text-emerald-500 group-hover:translate-y-[1px] transition-transform"
-          >
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-            <polyline points="7 10 12 15 17 10" />
-            <line x1="12" x2="12" y1="15" y2="3" />
-          </svg>
-          Export Report
-        </button>
-      </div>
-
       {/* Metrics Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {metrics.map((metric, idx) => (
           <div
             key={idx}
@@ -181,7 +217,7 @@ export default function AdminDashboardPage() {
                 {metric.value}
               </span>
               <span
-                className={`flex items-center text-sm font-bold ${metric.trend === "up" ? "text-emerald-500" : "text-blue-500"}`}
+                className={`flex items-center text-sm font-bold ${metric.trend === "up" ? "text-primary" : "text-blue-500"}`}
               >
                 {metric.trend === "up" ? (
                   <svg
@@ -215,6 +251,32 @@ export default function AdminDashboardPage() {
             </div>
           </div>
         ))}
+
+        {/* Export Report Button */}
+        <div className="flex items-center justify-center h-[100px] lg:h-full">
+          <button
+            onClick={handleExportExcel}
+            className="group relative flex items-center gap-2.5 px-6 py-3 bg-primary text-white font-bold text-sm tracking-wide rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="group-hover:translate-y-0.5 transition-transform duration-300"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" x2="12" y1="15" y2="3" />
+            </svg>
+            EXPORT REPORT
+          </button>
+        </div>
       </div>
 
       {/* Main Content Area */}
@@ -273,7 +335,7 @@ export default function AdminDashboardPage() {
               Go to Orders
             </Link>
           </div>
-          <div className="space-y-6">
+          <div className="space-y-6 max-h-[340px] overflow-y-auto -mr-4 pr-4">
             {recentTransactions.length > 0 ? (
               recentTransactions.map((trx, idx) => (
                 <div key={idx} className="flex items-center justify-between">

@@ -5,28 +5,29 @@ import RecentlyViewed from "@/components/RecentlyViewed";
 
 export default function Home() {
   return (
-    <div className="flex flex-col w-full min-h-[calc(100vh-73px)]">
+    <div className="flex flex-col w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 min-h-[calc(100vh-73px)] space-y-6 sm:space-y-8 py-4 sm:py-8">
       {/* Welcome Offer Banner */}
       <section
-        className="w-full px-4 sm:px-8 lg:px-12 mt-4 sm:mt-8 mb-6 opacity-0 animate-slide-up"
+        className="w-full opacity-0 animate-slide-up"
         style={{ animationDelay: "0.1s" }}
       >
-        <div className="relative w-full aspect-[16/9] sm:aspect-auto sm:h-[350px] lg:h-[450px] rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-2xl shadow-primary/10 group">
+        <div className="relative w-full rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-2xl shadow-primary/10 group flex">
           <Image
-            src="/banner1.png"
+            src="/banner.png"
             alt="Welcome offer banner"
-            fill
-            className="object-cover object-left md:object-center"
+            width={1774}
+            height={887}
+            className="w-full h-auto"
             unoptimized
             priority
           />
 
           <Link
             href="/categories"
-            className="absolute bottom-[8%] right-[5%] sm:bottom-[15%] sm:right-[12%] md:bottom-[15%] md:right-[15%] lg:bottom-[18%] lg:right-[22%] flex items-center justify-center bg-[#4c7c2b] text-white font-bold rounded-full hover:bg-[#3d6322] hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(76,124,43,0.5)] transition-all duration-300 shadow-lg w-[28%] min-w-[100px] max-w-[140px] h-[28%] min-h-[32px] max-h-[44px] sm:w-[170px] sm:h-[54px] md:w-[190px] md:h-[60px] sm:max-w-none sm:max-h-none group/btn"
+            className="absolute bottom-[8%] right-[5%] sm:bottom-[15%] sm:right-[12%] md:bottom-[15%] md:right-[15%] lg:bottom-[18%] lg:right-[22%] flex items-center justify-center bg-[#4c7c2b] text-white font-bold rounded-full hover:bg-[#3d6322] hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(76,124,43,0.5)] transition-all duration-300 shadow-lg w-[28%] h-[28%] sm:w-[170px] sm:h-[54px] md:w-[190px] md:h-[60px] group/btn"
           >
-            <div className="flex items-center justify-center w-[calc(100%-4px)] h-[calc(100%-4px)] sm:w-[calc(100%-6px)] sm:h-[calc(100%-6px)] md:w-[calc(100%-8px)] md:h-[calc(100%-8px)] border-[1.5px] border-dashed border-white/60 rounded-full gap-1 sm:gap-2 group-hover/btn:border-white transition-colors duration-300">
-              <span className="text-[10px] min-[400px]:text-xs sm:text-base md:text-lg whitespace-nowrap">
+            <div className="flex items-center justify-center w-[calc(100%-4px)] h-[calc(100%-4px)] sm:w-[calc(100%-6px)] sm:h-[calc(100%-6px)] md:w-[calc(100%-8px)] md:h-[calc(100%-8px)] border-[1px] sm:border-[1.5px] border-dashed border-white/60 rounded-full gap-1 sm:gap-2 group-hover/btn:border-white transition-colors duration-300">
+              <span className="text-[9px] min-[400px]:text-[11px] sm:text-base md:text-lg whitespace-nowrap">
                 Claim Now
               </span>
               <svg
@@ -37,7 +38,7 @@ export default function Home() {
                 strokeWidth="1"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="w-3 h-3 min-[400px]:w-3.5 min-[400px]:h-3.5 sm:w-[18px] sm:h-[18px] md:w-[20px] md:h-[20px] flex-shrink-0"
+                className="w-2.5 h-2.5 min-[400px]:w-3 min-[400px]:h-3 sm:w-[18px] sm:h-[18px] md:w-[20px] md:h-[20px] flex-shrink-0"
               >
                 <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 1.48 7.3A7.03 7.03 0 0 1 11 20z" />
                 <path d="M11 20v-5" />
@@ -50,14 +51,14 @@ export default function Home() {
       {/* Recently Viewed Section */}
       <RecentlyViewed />
 
-      <main className="relative flex flex-col items-center justify-center text-center px-4 sm:px-8 lg:px-12 py-4 sm:py-8 z-10 w-full overflow-hidden bg-accent/5 border-y border-accent/10 shadow-inner">
+      <main className="relative flex flex-col items-center justify-center text-center py-6 sm:py-8 z-10 w-full overflow-hidden bg-accent/5 border border-accent/10 shadow-inner rounded-2xl sm:rounded-[2rem]">
         {/* Subtle background decoration */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/10 rounded-full blur-3xl -z-10 pointer-events-none"></div>
 
-        <div className="w-full max-w-5xl flex flex-col items-center relative z-10">
+        <div className="w-full max-w-5xl flex flex-col items-center relative z-10 px-4">
           {/* Badge */}
           <div
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent font-bold text-xs uppercase tracking-widest mb-6 opacity-0 animate-slide-up"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent font-bold text-xs uppercase tracking-widest mb-4 opacity-0 animate-slide-up"
             style={{ animationDelay: "0.1s" }}
           >
             <span className="relative flex h-2 w-2">
@@ -68,7 +69,7 @@ export default function Home() {
           </div>
 
           <h1
-            className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-6 opacity-0 animate-slide-up leading-tight sm:leading-tight text-primary"
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 opacity-0 animate-slide-up leading-tight sm:leading-tight text-primary"
             style={{ animationDelay: "0.2s" }}
           >
             Fresh Farm Produce, <br className="hidden sm:block" />
@@ -78,13 +79,13 @@ export default function Home() {
           </h1>
 
           <div
-            className="flex flex-col items-center gap-3 mb-10 opacity-0 animate-slide-up"
+            className="flex flex-col items-center gap-2 mb-6 opacity-0 animate-slide-up"
             style={{ animationDelay: "0.3s" }}
           >
-            <p className="text-xl sm:text-2xl text-primary/80 font-bold max-w-2xl leading-relaxed">
+            <p className="text-lg sm:text-xl text-primary/80 font-bold max-w-2xl leading-relaxed">
               உழவரிடமிருந்து நேரடியாக உங்கள் இல்லத்திற்கு
             </p>
-            <p className="text-base sm:text-lg text-primary/60 font-medium max-w-2xl leading-relaxed">
+            <p className="text-sm sm:text-base text-primary/60 font-medium max-w-2xl leading-relaxed">
               Directly from farmers to your home, ensuring maximum freshness and
               fair prices for our local growers.
             </p>
@@ -96,7 +97,7 @@ export default function Home() {
           >
             <Link
               href="/categories"
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-accent hover:bg-accent/90 text-white text-lg font-bold shadow-[0_8px_30px_rgba(78,140,31,0.3)] transition-all transform hover:-translate-y-1 hover:scale-105"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-accent hover:bg-accent/90 text-white text-base font-bold shadow-[0_8px_30px_rgba(78,140,31,0.3)] transition-all transform hover:-translate-y-1 hover:scale-105"
             >
               Shop Now
               <svg
@@ -117,7 +118,7 @@ export default function Home() {
 
             <Link
               href="/login"
-              className="w-full sm:w-auto flex items-center justify-center px-8 py-4 rounded-2xl bg-white text-primary border-2 border-primary/10 hover:border-primary/30 text-lg font-bold hover:bg-primary/5 transition-all shadow-sm"
+              className="w-full sm:w-auto flex items-center justify-center px-6 py-3 rounded-2xl bg-white text-primary border-2 border-primary/10 hover:border-primary/30 text-base font-bold hover:bg-primary/5 transition-all shadow-sm"
             >
               Sign In
             </Link>
@@ -127,7 +128,7 @@ export default function Home() {
 
       {/* Features Section */}
       <section
-        className="w-full px-4 sm:px-8 lg:px-12 py-8 sm:py-10 opacity-0 animate-slide-up"
+        className="w-full opacity-0 animate-slide-up"
         style={{ animationDelay: "0.5s" }}
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
@@ -220,7 +221,7 @@ export default function Home() {
 
       {/* Weekend Special Banner */}
       <section
-        className="w-full px-4 sm:px-8 lg:px-12 py-8 opacity-0 animate-slide-up"
+        className="w-full opacity-0 animate-slide-up"
         style={{ animationDelay: "0.6s" }}
       >
         <div className="relative w-full h-[250px] sm:h-[400px] rounded-[2rem] overflow-hidden shadow-2xl shadow-primary/10 group">
@@ -246,7 +247,7 @@ export default function Home() {
               within 24 hours.
             </p>
             <Link
-              href="/categories/vegetables"
+              href="/categories/greens"
               className="w-fit flex items-center gap-2 px-6 sm:px-8 py-2.5 sm:py-3.5 bg-white text-primary text-sm sm:text-base font-bold rounded-full hover:bg-accent hover:text-white transition-all transform hover:-translate-y-1 shadow-xl hover:shadow-accent/40"
             >
               Explore Offer

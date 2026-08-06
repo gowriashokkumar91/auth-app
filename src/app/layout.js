@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "SivaFarm | உழவரிடமிருந்து நேரடியாக உங்கள் இல்லத்திற்கு",
+  title: "Sivamazhil | உழவரிடமிருந்து நேரடியாக உங்கள் இல்லத்திற்கு",
   description: "Directly from farmers to your home.",
 };
 

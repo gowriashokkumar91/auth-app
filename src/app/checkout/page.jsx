@@ -153,8 +153,14 @@ function CheckoutContent() {
     0
   );
   const totalDiscount = totalOriginalPrice - subtotal;
-  const deliveryFee = subtotal > 500 ? 0 : 50;
-  const totalAmount = subtotal + deliveryFee;
+
+  const firstOrderDiscount = user?.isFirstOrder
+    ? Math.round(subtotal * 0.25)
+    : 0;
+  const newSubtotal = subtotal - firstOrderDiscount;
+
+  const deliveryFee = newSubtotal > 500 ? 0 : 50;
+  const totalAmount = newSubtotal + deliveryFee;
   const totalItemCount = checkoutItems.reduce(
     (sum, item) => sum + (item.quantity || 1),
     0
@@ -204,7 +210,24 @@ function CheckoutContent() {
         dispatch(clearCart());
       }
 
-      toast.success("🎉 Order placed successfully!");
+      toast.success("Order confirmed! A receipt has been sent to your email.", {
+        icon: (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="2"
+            stroke="currentColor"
+            className="w-5 h-5 text-green-500"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4.5 12.75l6 6 9-13.5"
+            />
+          </svg>
+        ),
+      });
       router.push("/dashboard?tab=orders");
     } catch (err) {
       toast.error(err?.data?.message || "Failed to place order");
@@ -686,10 +709,21 @@ function CheckoutContent() {
                   {totalDiscount > 0 && (
                     <div className="flex justify-between items-center text-sm">
                       <span className="text-primary/60 border-b border-dashed border-primary/30 pb-0.5">
-                        Discount
+                        Product Discount
                       </span>
                       <span className="font-semibold text-green-600">
                         - ₹{totalDiscount}
+                      </span>
+                    </div>
+                  )}
+
+                  {firstOrderDiscount > 0 && (
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-primary/60 border-b border-dashed border-primary/30 pb-0.5">
+                        First Order Discount (25%)
+                      </span>
+                      <span className="font-semibold text-accent animate-pulse">
+                        - ₹{firstOrderDiscount}
                       </span>
                     </div>
                   )}
@@ -716,7 +750,7 @@ function CheckoutContent() {
 
                   {deliveryFee > 0 && (
                     <p className="text-[11px] text-primary/40 italic text-center">
-                      * Add ₹{501 - subtotal} more for free delivery!
+                      * Add ₹{501 - newSubtotal} more for free delivery!
                     </p>
                   )}
 

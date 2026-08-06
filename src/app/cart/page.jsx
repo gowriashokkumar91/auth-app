@@ -262,9 +262,9 @@ export default function CartPage() {
                       <polyline points="9 22 9 12 15 12 15 22" />
                     </svg>
                     Sold by:{" "}
-                    <span className="font-semibold text-primary/80">
-                      {item.sellerName || "SivaFarm Direct"}
-                    </span>
+                    <p className="text-[10px] text-zinc-500 mt-1 uppercase font-bold tracking-wider">
+                      {item.sellerName || "Sivamazhil Direct"}
+                    </p>
                   </div>
                 </div>
               ))}

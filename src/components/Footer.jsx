@@ -12,8 +12,11 @@ export default function Footer() {
   }
 
   return (
-    <footer className="mt-auto pt-12 pb-8 border-t border-zinc-200 dark:border-zinc-800 bg-secondary">
-      <div className="w-full px-4 sm:px-8 lg:px-12">
+    <footer
+      id="contact-footer"
+      className="mt-auto pt-12 pb-8 border-t border-zinc-200 dark:border-zinc-800 bg-secondary"
+    >
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Brand & Description */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
@@ -24,14 +27,14 @@ export default function Footer() {
               <div className="bg-white rounded-full w-12 h-12 flex items-center justify-center overflow-hidden shadow-sm border border-primary/20 flex-shrink-0">
                 <Image
                   src="/logos.png"
-                  alt="Siva Farm Logo"
+                  alt="Sivamazhil Logo"
                   width={100}
                   height={100}
                   className="w-full h-full object-cover scale-[0.9]"
                 />
               </div>
               <h2 className="text-2xl font-extrabold text-primary tracking-wide uppercase">
-                SivaFarm
+                Sivamazhil
               </h2>
             </Link>
             <p className="text-primary/70 text-sm leading-relaxed max-w-sm">
@@ -179,17 +182,39 @@ export default function Footer() {
                 </svg>
               </Link>
             </div>
-            <p className="text-sm font-bold text-primary/80 mt-2">
-              உழவரிடமிருந்து நேரடியாக உங்கள் இல்லத்திற்கு
-            </p>
+
+            <div className="flex flex-col gap-2 mt-2 mb-3 items-center md:items-start">
+              <span className="text-sm font-bold text-primary/70">
+                Have any queries? Feel free to call us!
+              </span>
+              <a
+                href="tel:+917812886942"
+                className="text-sm font-bold text-primary/90 hover:text-accent transition-colors flex items-center gap-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
+                +91 78128 86942
+              </a>
+            </div>
           </div>
         </div>
 
         {/* Copyright */}
         <div className="pt-8 border-t border-zinc-200 dark:border-zinc-800 text-center">
           <p className="text-sm font-medium text-primary/70">
-            &copy; {new Date().getFullYear()} SivaFarm. Directly from farmers to
-            your home.
+            &copy; {new Date().getFullYear()} Sivamazhil. உழவரிடமிருந்து
+            நேரடியாக உங்கள் இல்லத்திற்கு
           </p>
         </div>
       </div>

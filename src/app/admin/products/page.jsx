@@ -356,7 +356,6 @@ export default function AdminProductsPage() {
                     >
                       <option value="Active">Active</option>
                       <option value="Out of Stock">Out of Stock</option>
-                      <option value="Draft">Draft</option>
                     </select>
                   </div>
                   <div className="md:col-span-2">

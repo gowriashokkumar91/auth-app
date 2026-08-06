@@ -320,7 +320,7 @@ export default function AdminLayout({ children }) {
       default:
         return {
           title: "Admin Portal",
-          subtitle: "Welcome to SivaFarm Admin",
+          subtitle: "Welcome to Sivamazhil Admin",
           icon: null,
         };
     }
@@ -372,12 +372,12 @@ export default function AdminLayout({ children }) {
         <div className="h-16 px-6 border-b border-white/10 flex items-center gap-3 shrink-0">
           <img
             src="/logos.png"
-            alt="SivaFarm Logo"
+            alt="Sivamazhil Logo"
             className="h-9 w-9 object-contain bg-white rounded-full p-1"
           />
           <div className="flex flex-col justify-center">
             <h1 className="text-lg font-extrabold tracking-tight text-white leading-tight">
-              SivaFarm
+              Sivamazhil
             </h1>
             <span className="text-[10px] font-bold text-white/70 uppercase tracking-widest">
               Admin Portal
