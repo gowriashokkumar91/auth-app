@@ -22,6 +22,7 @@ function CheckoutContent() {
   const [checkoutQuantity, setCheckoutQuantity] = useState(initialQuantity);
   const [step, setStep] = useState(initialStep);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isOrderSuccess, setIsOrderSuccess] = useState(false);
 
   const [isEditingAddress, setIsEditingAddress] = useState(false);
   const [deliveryInfo, setDeliveryInfo] = useState(null);
@@ -87,18 +88,24 @@ function CheckoutContent() {
         unit: item.unit || "kg",
       }));
     } else if (product) {
+      const isGreens =
+        product.category === "greens" || product.category === "Greens";
+      const finalPrice = isGreens
+        ? Math.round(product.price * 0.8)
+        : product.discount > 0
+          ? product.price - (product.price * product.discount) / 100
+          : product.price;
+
       return [
         {
           productId: product._id || product.id,
           name: product.name,
           quantity: checkoutQuantity,
-          price:
-            product.discount > 0
-              ? product.price - (product.price * product.discount) / 100
-              : product.price,
+          price: finalPrice,
           originalPrice: product.price,
           image: product.images?.[0] || product.image || "/placeholder.png",
           unit: product.unit || "kg",
+          category: product.category,
         },
       ];
     }
@@ -153,6 +160,16 @@ function CheckoutContent() {
     0
   );
   const totalDiscount = totalOriginalPrice - subtotal;
+
+  const totalGreensSavings = checkoutItems.reduce((sum, item) => {
+    const isGreens = item.category === "greens" || item.category === "Greens";
+    if (isGreens) {
+      return sum + (item.originalPrice - item.price) * item.quantity;
+    }
+    return sum;
+  }, 0);
+
+  const otherDiscount = totalDiscount - totalGreensSavings;
 
   const firstOrderDiscount = user?.isFirstOrder
     ? Math.round(subtotal * 0.25)
@@ -210,25 +227,7 @@ function CheckoutContent() {
         dispatch(clearCart());
       }
 
-      toast.success("Order confirmed! A receipt has been sent to your email.", {
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="2"
-            stroke="currentColor"
-            className="w-5 h-5 text-green-500"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M4.5 12.75l6 6 9-13.5"
-            />
-          </svg>
-        ),
-      });
-      router.push("/dashboard?tab=orders");
+      setIsOrderSuccess(true);
     } catch (err) {
       toast.error(err?.data?.message || "Failed to place order");
       setIsProcessing(false);
@@ -240,6 +239,56 @@ function CheckoutContent() {
     { num: 2, label: "Address" },
     { num: 3, label: "Payment" },
   ];
+
+  if (isOrderSuccess) {
+    return (
+      <div className="min-h-screen relative flex items-center justify-center px-4 bg-primary/5">
+        <div className="relative z-10 max-w-sm w-full bg-white border-2 border-primary/10 shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-[2rem] p-8 text-center animate-fade-in-up">
+          {/* Cute Bouncy Checkmark */}
+          <div className="mx-auto w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-5 animate-bounce">
+            <svg
+              className="w-10 h-10 text-primary drop-shadow-sm"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={3}
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </div>
+
+          <h2 className="text-2xl font-black text-primary mb-2">
+            Order Placed!
+          </h2>
+
+          <p className="text-primary/70 text-sm mb-8 font-medium px-2">
+            Yay! Your order was successfully placed. A detailed receipt has been
+            sent to your email.
+          </p>
+
+          <div className="space-y-3">
+            <button
+              onClick={() => router.push("/dashboard?tab=orders")}
+              className="w-full bg-primary text-white font-bold py-3.5 px-6 rounded-xl hover:bg-primary/90 transition-transform active:scale-95 shadow-md shadow-primary/30"
+            >
+              View My Orders
+            </button>
+
+            <button
+              onClick={() => router.push("/")}
+              className="w-full bg-transparent text-primary/70 font-bold py-2.5 px-6 rounded-xl hover:bg-primary/5 transition-colors active:scale-95"
+            >
+              Continue Shopping
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background pb-20 pt-8">
@@ -706,13 +755,24 @@ function CheckoutContent() {
                     </span>
                   </div>
 
-                  {totalDiscount > 0 && (
+                  {otherDiscount > 0 && (
                     <div className="flex justify-between items-center text-sm">
                       <span className="text-primary/60 border-b border-dashed border-primary/30 pb-0.5">
                         Product Discount
                       </span>
                       <span className="font-semibold text-green-600">
-                        - ₹{totalDiscount}
+                        - ₹{otherDiscount}
+                      </span>
+                    </div>
+                  )}
+
+                  {totalGreensSavings > 0 && (
+                    <div className="flex justify-between items-center text-sm bg-green-50 p-2 rounded-lg -mx-2 px-2 border border-green-100">
+                      <span className="font-bold text-green-700">
+                        ✨ Total Greens Savings
+                      </span>
+                      <span className="font-black text-green-700">
+                        - ₹{totalGreensSavings}
                       </span>
                     </div>
                   )}

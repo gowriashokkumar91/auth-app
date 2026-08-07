@@ -12,6 +12,18 @@ import {
 } from "@/redux/slices/adminApi.slice";
 
 export default function AdminProductsPage() {
+  const defaultForm = {
+    name: "",
+    description: "",
+    category: "",
+    price: "",
+    stock: "",
+    unit: "",
+    image: "",
+    status: "In Stock",
+  };
+
+  const [formData, setFormData] = useState(defaultForm);
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingProductId, setEditingProductId] = useState(null);

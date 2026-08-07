@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { removeFromCart, updateCartQuantity } from "@/redux/slices/cart.slice";
 
-export default function CartPage() {
+export default function CartPage({ isEmbedded = false }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const cartItems = useSelector((state) => state.cart.items);
@@ -46,6 +46,39 @@ export default function CartPage() {
   } = calculateTotals();
 
   if (cartItems.length === 0) {
+    if (isEmbedded) {
+      return (
+        <div className="animate-fade-in w-full">
+          <h2 className="text-2xl font-bold border-b border-primary/10 pb-4 mb-6">
+            My Cart
+          </h2>
+          <div className="text-center py-12">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              className="mx-auto text-primary/30 mb-4"
+            >
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+            <p className="text-primary/70 mb-4 text-lg">Your cart is empty.</p>
+            <Link
+              href="/categories"
+              className="text-primary font-bold hover:underline"
+            >
+              Start Shopping
+            </Link>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="min-h-[calc(100vh-80px)] flex flex-col items-center justify-center bg-background">
         <div className="w-48 h-48 mb-6 text-primary/20">
@@ -76,41 +109,57 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-20 pt-8">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div
+      className={
+        isEmbedded
+          ? "animate-fade-in w-full"
+          : "min-h-screen bg-background pb-20 pt-8"
+      }
+    >
+      <div
+        className={isEmbedded ? "" : "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"}
+      >
+        {isEmbedded && (
+          <h2 className="text-2xl font-bold border-b border-primary/10 pb-4 mb-6">
+            My Cart
+          </h2>
+        )}
+
         {/* ── Stepper (3 steps, matches checkout) ── */}
-        <div className="flex justify-center items-center mb-10 relative w-full max-w-sm mx-auto">
-          <div className="absolute top-4 left-8 right-8 h-[2px] bg-primary/10 z-0"></div>
-          <div className="flex justify-between w-full relative z-10 px-2">
-            {[
-              { num: 1, label: "Cart" },
-              { num: 2, label: "Address" },
-              { num: 3, label: "Payment" },
-            ].map((step) => (
-              <div
-                key={step.num}
-                className="flex flex-col items-center bg-background px-1"
-              >
+        {!isEmbedded && (
+          <div className="flex justify-center items-center mb-10 relative w-full max-w-sm mx-auto">
+            <div className="absolute top-4 left-8 right-8 h-[2px] bg-primary/10 z-0"></div>
+            <div className="flex justify-between w-full relative z-10 px-2">
+              {[
+                { num: 1, label: "Cart" },
+                { num: 2, label: "Address" },
+                { num: 3, label: "Payment" },
+              ].map((step) => (
                 <div
-                  className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-all ${
-                    step.num === 1
-                      ? "border-primary text-primary bg-white shadow-md shadow-primary/20"
-                      : "border-primary/20 text-primary/30 bg-white"
-                  }`}
+                  key={step.num}
+                  className="flex flex-col items-center bg-background px-1"
                 >
-                  {step.num}
+                  <div
+                    className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-all ${
+                      step.num === 1
+                        ? "border-primary text-primary bg-white shadow-md shadow-primary/20"
+                        : "border-primary/20 text-primary/30 bg-white"
+                    }`}
+                  >
+                    {step.num}
+                  </div>
+                  <span
+                    className={`text-[11px] mt-1.5 font-bold ${
+                      step.num === 1 ? "text-primary" : "text-primary/30"
+                    }`}
+                  >
+                    {step.label}
+                  </span>
                 </div>
-                <span
-                  className={`text-[11px] mt-1.5 font-bold ${
-                    step.num === 1 ? "text-primary" : "text-primary/30"
-                  }`}
-                >
-                  {step.label}
-                </span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="flex flex-col lg:flex-row gap-6 items-start">
           {/* ── Left: Product Details ── */}

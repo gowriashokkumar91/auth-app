@@ -41,6 +41,10 @@ export default function AdminOrdersPage() {
           date: new Date(order.createdAt).toLocaleString(),
           status: order.status,
           rawItems: order.items,
+          subtotal: order.subtotal || 0,
+          greensSavings: order.greensSavings || 0,
+          firstOrderDiscount: order.firstOrderDiscount || 0,
+          deliveryFee: order.deliveryFee || 0,
         }))
       : [];
   }, [ordersData]);
@@ -347,14 +351,37 @@ export default function AdminOrdersPage() {
                     </svg>
                     Payment Info
                   </h4>
-                  <p className="text-sm text-primary/80 leading-relaxed">
-                    Method: Cash on Delivery
-                    <br />
-                    Total Amount:{" "}
-                    <span className="font-bold text-primary">
-                      {selectedOrder.total}
-                    </span>
-                  </p>
+                  <div className="text-sm text-primary/80 leading-relaxed space-y-1">
+                    <div>Method: Cash on Delivery</div>
+                    <div className="flex justify-between">
+                      <span>Subtotal:</span>
+                      <span>₹{selectedOrder.subtotal}</span>
+                    </div>
+                    {selectedOrder.greensSavings > 0 && (
+                      <div className="flex justify-between text-green-600 font-medium">
+                        <span>Greens Savings:</span>
+                        <span>- ₹{selectedOrder.greensSavings}</span>
+                      </div>
+                    )}
+                    {selectedOrder.firstOrderDiscount > 0 && (
+                      <div className="flex justify-between text-accent font-medium">
+                        <span>First Order Discount:</span>
+                        <span>- ₹{selectedOrder.firstOrderDiscount}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between">
+                      <span>Delivery Fee:</span>
+                      <span>
+                        {selectedOrder.deliveryFee === 0
+                          ? "FREE"
+                          : `+ ₹${selectedOrder.deliveryFee}`}
+                      </span>
+                    </div>
+                    <div className="flex justify-between border-t border-primary/10 pt-1 mt-1 font-bold text-primary">
+                      <span>Total Amount:</span>
+                      <span>{selectedOrder.total}</span>
+                    </div>
+                  </div>
 
                   <div className="mt-4 pt-4 border-t border-primary/10">
                     <h5 className="font-bold text-sm mb-2 text-primary">

@@ -9,6 +9,7 @@ import {
   useUpdateProfileMutation,
   useUploadProfileImageMutation,
 } from "@/redux/slices/auth.slice";
+import CartPage from "@/app/cart/page";
 import { removeFromWishlist } from "@/redux/slices/wishlist.slice";
 import { addToCart } from "@/redux/slices/cart.slice";
 import { toast } from "react-toastify";
@@ -60,7 +61,10 @@ export default function DashboardPage() {
     setIsClient(true);
 
     const tab = searchParams.get("tab");
-    if (tab && ["orders", "wishlist", "password", "profile"].includes(tab)) {
+    if (
+      tab &&
+      ["orders", "wishlist", "password", "profile", "cart"].includes(tab)
+    ) {
       setActiveTab(tab);
     } else if (!tab) {
       setActiveTab("orders"); // default tab
@@ -1371,14 +1375,45 @@ export default function DashboardPage() {
                   </svg>
                   Payment Info
                 </h4>
-                <p className="text-sm text-primary/70 leading-relaxed">
-                  Method: Cash on Delivery
-                  <br />
-                  Status: Pending
-                  <br />
-                  Total Amount:{" "}
-                  <span className="font-bold">{selectedOrder.total}</span>
-                </p>
+                <div className="text-sm text-primary/70 leading-relaxed space-y-1">
+                  <div>Method: Cash on Delivery</div>
+                  <div>Status: {selectedOrder.status}</div>
+
+                  <div className="flex justify-between pt-2">
+                    <span>Subtotal:</span>
+                    <span>
+                      ₹
+                      {selectedOrder.fullOrder?.subtotal ||
+                        selectedOrder.total.replace("₹", "")}
+                    </span>
+                  </div>
+                  {selectedOrder.fullOrder?.greensSavings > 0 && (
+                    <div className="flex justify-between text-green-600 font-medium">
+                      <span>Greens Savings:</span>
+                      <span>- ₹{selectedOrder.fullOrder.greensSavings}</span>
+                    </div>
+                  )}
+                  {selectedOrder.fullOrder?.firstOrderDiscount > 0 && (
+                    <div className="flex justify-between text-accent font-medium">
+                      <span>First Order Discount:</span>
+                      <span>
+                        - ₹{selectedOrder.fullOrder.firstOrderDiscount}
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex justify-between">
+                    <span>Delivery Fee:</span>
+                    <span>
+                      {selectedOrder.fullOrder?.deliveryFee === 0
+                        ? "FREE"
+                        : `+ ₹${selectedOrder.fullOrder?.deliveryFee || 0}`}
+                    </span>
+                  </div>
+                  <div className="flex justify-between border-t border-primary/10 pt-1 mt-1 font-bold text-primary">
+                    <span>Total Amount:</span>
+                    <span>{selectedOrder.total}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1396,12 +1431,29 @@ export default function DashboardPage() {
     );
   };
 
+  const renderContent = () => {
+    switch (activeTab) {
+      case "profile":
+        return renderProfile();
+      case "orders":
+        return renderOrders();
+      case "wishlist":
+        return renderWishlist();
+      case "password":
+        return renderPassword();
+      case "cart":
+        return <CartPage isEmbedded={true} />;
+      default:
+        return renderProfile();
+    }
+  };
+
   return (
     <div className="min-h-[calc(100vh-73px)] bg-background relative overflow-hidden">
       {/* Subtle Background */}
       <div className="absolute top-0 right-0 w-full h-64 bg-gradient-to-b from-primary/5 to-transparent -z-10" />
 
-      <div className="w-full mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-12 flex flex-col md:flex-row gap-8 items-start">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-12 flex flex-col md:flex-row gap-8 items-start">
         {/* Sidebar */}
         <aside className="w-full md:w-64 flex-shrink-0">
           <div className="glass-panel p-4 rounded-3xl sticky top-24 border border-primary/10 shadow-lg">
@@ -1425,9 +1477,18 @@ export default function DashboardPage() {
                   {link.label}
                 </button>
               ))}
-              <Link
-                href="/cart"
-                className="flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-primary/70 hover:bg-primary/10 hover:text-primary transition-all"
+              <button
+                onClick={() => {
+                  setActiveTab("cart");
+                  if (typeof window !== "undefined") {
+                    window.history.pushState(null, "", `?tab=cart`);
+                  }
+                }}
+                className={`flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold transition-all w-full text-left ${
+                  activeTab === "cart"
+                    ? "bg-primary text-white shadow-md translate-x-2"
+                    : "text-primary/70 hover:bg-primary/10 hover:text-primary"
+                }`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -1445,7 +1506,7 @@ export default function DashboardPage() {
                   <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
                 </svg>
                 My Cart
-              </Link>
+              </button>
               <div className="my-1 border-t border-primary/10"></div>
               <button
                 onClick={() => {
@@ -1505,10 +1566,7 @@ export default function DashboardPage() {
             <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full blur-[50px] -z-10" />
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-primary/5 rounded-full blur-[50px] -z-10" />
 
-            {activeTab === "profile" && renderProfile()}
-            {activeTab === "orders" && renderOrders()}
-            {activeTab === "wishlist" && renderWishlist()}
-            {activeTab === "password" && renderPassword()}
+            {renderContent()}
           </div>
         </main>
       </div>
