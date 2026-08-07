@@ -86,142 +86,150 @@ export default function AdminOrdersPage() {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="bg-white rounded-2xl shadow-sm border border-primary/10 overflow-hidden">
-        <div className="p-4 border-b border-primary/10 flex flex-wrap gap-4 items-center justify-between">
-          <div className="flex gap-2">
-            <button
-              onClick={() => setFilter("All Orders")}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${filter === "All Orders" ? "bg-primary text-white" : "bg-transparent text-primary/60 hover:text-primary"}`}
-            >
-              All Orders
-            </button>
-            <button
-              onClick={() => setFilter("Processing")}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${filter === "Processing" ? "bg-primary text-white" : "bg-transparent text-primary/60 hover:text-primary"}`}
-            >
-              Processing
-            </button>
-            <button
-              onClick={() => setFilter("Delivered")}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${filter === "Delivered" ? "bg-primary text-white" : "bg-transparent text-primary/60 hover:text-primary"}`}
-            >
-              Delivered
-            </button>
-          </div>
-          <div className="flex gap-4">
-            <input
-              type="text"
-              placeholder="Search by Order ID or Customer..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="bg-primary/5 border border-primary/10 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 w-64"
-            />
-            <button
-              onClick={() => refetch()}
-              className="bg-primary/10 hover:bg-primary/20 text-primary font-bold p-2.5 rounded-xl transition-colors shadow-sm flex items-center justify-center"
-              title="Refresh Orders"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
+    <>
+      <div className="space-y-6 animate-fade-in">
+        <div className="bg-white rounded-2xl shadow-sm border border-primary/10 overflow-hidden">
+          <div className="p-4 border-b border-primary/10 flex flex-wrap gap-4 items-center justify-between">
+            <div className="flex gap-2">
+              <button
+                onClick={() => setFilter("All Orders")}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${filter === "All Orders" ? "bg-primary text-white" : "bg-transparent text-primary/60 hover:text-primary"}`}
               >
-                <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
-                <path d="M21 3v5h-5" />
-              </svg>
-            </button>
+                All Orders
+              </button>
+              <button
+                onClick={() => setFilter("Processing")}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${filter === "Processing" ? "bg-primary text-white" : "bg-transparent text-primary/60 hover:text-primary"}`}
+              >
+                Processing
+              </button>
+              <button
+                onClick={() => setFilter("Delivered")}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${filter === "Delivered" ? "bg-primary text-white" : "bg-transparent text-primary/60 hover:text-primary"}`}
+              >
+                Delivered
+              </button>
+            </div>
+            <div className="flex gap-4">
+              <input
+                type="text"
+                placeholder="Search by Order ID or Customer..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="bg-primary/5 border border-primary/10 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 w-64"
+              />
+              <button
+                onClick={() => refetch()}
+                className="bg-primary/10 hover:bg-primary/20 text-primary font-bold p-2.5 rounded-xl transition-colors shadow-sm flex items-center justify-center"
+                title="Refresh Orders"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                >
+                  <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+                  <path d="M21 3v5h-5" />
+                </svg>
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div className="overflow-x-auto overflow-y-auto max-h-[74vh]">
-          <table className="w-full text-left border-collapse whitespace-nowrap">
-            <thead className="sticky top-0 z-10 bg-white shadow-sm">
-              <tr className="bg-primary/5 border-b border-primary/10 text-primary/70 text-xs uppercase tracking-wider font-semibold">
-                <th className="py-4 px-6">Order ID</th>
-                <th className="py-4 px-6">Customer</th>
-                <th className="py-4 px-6">Date</th>
-                <th className="py-4 px-6">Items</th>
-                <th className="py-4 px-6">Total</th>
-                <th className="py-4 px-6">Status</th>
-                <th className="py-4 px-6 text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan="7" className="py-8 text-center text-primary/60">
-                    Loading orders...
-                  </td>
+          <div className="overflow-x-auto overflow-y-auto max-h-[74vh]">
+            <table className="w-full text-left border-collapse whitespace-nowrap">
+              <thead className="sticky top-0 z-10 bg-white shadow-sm">
+                <tr className="bg-primary/5 border-b border-primary/10 text-primary/70 text-xs uppercase tracking-wider font-semibold">
+                  <th className="py-4 px-6">Order ID</th>
+                  <th className="py-4 px-6">Customer</th>
+                  <th className="py-4 px-6">Date</th>
+                  <th className="py-4 px-6">Items</th>
+                  <th className="py-4 px-6">Total</th>
+                  <th className="py-4 px-6">Status</th>
+                  <th className="py-4 px-6 text-right">Action</th>
                 </tr>
-              ) : filteredOrders.length > 0 ? (
-                filteredOrders.map((order, idx) => (
-                  <tr
-                    key={order.id}
-                    className="border-b border-primary/5 hover:bg-primary/5 transition-colors"
-                  >
+              </thead>
+              <tbody>
+                {loading ? (
+                  <tr>
                     <td
-                      className="py-4 px-6 font-bold text-sm text-primary"
-                      title={order.id}
+                      colSpan="7"
+                      className="py-8 text-center text-primary/60"
                     >
-                      #{order.id.substring(order.id.length - 6).toUpperCase()}
-                    </td>
-                    <td className="py-4 px-6 text-sm font-medium text-primary/80">
-                      {order.customer}
-                    </td>
-                    <td className="py-4 px-6 text-sm text-primary/60">
-                      {order.date}
-                    </td>
-                    <td className="py-4 px-6 text-sm text-primary/60">
-                      {order.items}
-                    </td>
-                    <td className="py-4 px-6 text-sm font-bold text-primary">
-                      {order.total}
-                    </td>
-                    <td className="py-4 px-6">
-                      <span
-                        className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
-                          order.status === "Delivered"
-                            ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
-                            : order.status === "Processing"
-                              ? "bg-blue-500/10 text-blue-600 border-blue-500/20"
-                              : order.status === "In Transit"
-                                ? "bg-purple-500/10 text-purple-600 border-purple-500/20"
-                                : "bg-red-500/10 text-red-600 border-red-500/20"
-                        }`}
-                      >
-                        {order.status}
-                      </span>
-                    </td>
-                    <td className="py-4 px-6 text-right">
-                      <button
-                        onClick={() => setSelectedOrder(order)}
-                        className="text-sm font-semibold text-primary/80 hover:text-primary hover:underline"
-                      >
-                        View Details
-                      </button>
+                      Loading orders...
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="7" className="py-8 text-center text-primary/60">
-                    No orders found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                ) : filteredOrders.length > 0 ? (
+                  filteredOrders.map((order, idx) => (
+                    <tr
+                      key={order.id}
+                      className="border-b border-primary/5 hover:bg-primary/5 transition-colors"
+                    >
+                      <td
+                        className="py-4 px-6 font-bold text-sm text-primary"
+                        title={order.id}
+                      >
+                        #{order.id.substring(order.id.length - 6).toUpperCase()}
+                      </td>
+                      <td className="py-4 px-6 text-sm font-medium text-primary/80">
+                        {order.customer}
+                      </td>
+                      <td className="py-4 px-6 text-sm text-primary/60">
+                        {order.date}
+                      </td>
+                      <td className="py-4 px-6 text-sm text-primary/60">
+                        {order.items}
+                      </td>
+                      <td className="py-4 px-6 text-sm font-bold text-primary">
+                        {order.total}
+                      </td>
+                      <td className="py-4 px-6">
+                        <span
+                          className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
+                            order.status === "Delivered"
+                              ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
+                              : order.status === "Processing"
+                                ? "bg-blue-500/10 text-blue-600 border-blue-500/20"
+                                : order.status === "In Transit"
+                                  ? "bg-purple-500/10 text-purple-600 border-purple-500/20"
+                                  : "bg-red-500/10 text-red-600 border-red-500/20"
+                          }`}
+                        >
+                          {order.status}
+                        </span>
+                      </td>
+                      <td className="py-4 px-6 text-right">
+                        <button
+                          onClick={() => setSelectedOrder(order)}
+                          className="text-sm font-semibold text-primary/80 hover:text-primary hover:underline"
+                        >
+                          View Details
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td
+                      colSpan="7"
+                      className="py-8 text-center text-primary/60"
+                    >
+                      No orders found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
       {selectedOrder && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-primary/10 overflow-hidden flex flex-col max-h-[90vh]">
+          <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-primary/10 overflow-hidden flex flex-col max-h-[80vh]">
             <div className="p-6 border-b border-primary/10 flex justify-between items-center bg-primary/5">
               <div>
                 <h3
@@ -417,6 +425,6 @@ export default function AdminOrdersPage() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
