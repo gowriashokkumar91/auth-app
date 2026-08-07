@@ -9,6 +9,7 @@ import { useGetProductByIdQuery } from "@/redux/slices/product.slice";
 import {
   useCreateOrderMutation,
   useVerifyPaymentMutation,
+  useGetOrderByIdQuery,
 } from "@/redux/slices/order.slice";
 import { clearCart } from "@/redux/slices/cart.slice";
 import { toast } from "react-toastify";
@@ -41,6 +42,7 @@ function CheckoutContent() {
   const [isEditingAddress, setIsEditingAddress] = useState(false);
   const [deliveryInfo, setDeliveryInfo] = useState(null);
   const [editForm, setEditForm] = useState(null);
+  const [currentOrderId, setCurrentOrderId] = useState(null);
 
   const { data: user, isLoading: isUserLoading } = useProfileQuery();
   const { data: product, isLoading: isProductLoading } = useGetProductByIdQuery(
@@ -55,6 +57,25 @@ function CheckoutContent() {
   const [verifyPayment] = useVerifyPaymentMutation();
 
   const isCartCheckout = !productId;
+
+  const { data: orderStatusData } = useGetOrderByIdQuery(currentOrderId, {
+    skip: !currentOrderId || isOrderSuccess,
+    pollingInterval: 3000,
+  });
+
+  useEffect(() => {
+    if (orderStatusData && orderStatusData.status !== "Pending Payment") {
+      if (isCartCheckout) dispatch(clearCart());
+      setIsOrderSuccess(true);
+      setIsProcessing(false);
+
+      // Close razorpay modal if it's still open
+      const rzpModal = document.querySelector(".razorpay-checkout-frame");
+      if (rzpModal) {
+        rzpModal.remove();
+      }
+    }
+  }, [orderStatusData, isCartCheckout, dispatch]);
 
   useEffect(() => {
     if (isCartCheckout && cartItems.length === 0) {
@@ -241,6 +262,9 @@ function CheckoutContent() {
       };
 
       const response = await createOrder(orderPayload).unwrap();
+      const dbOrder = response.order || response; // Handle both online and COD responses
+
+      setCurrentOrderId(dbOrder._id);
 
       if (paymentMethod === "COD") {
         if (isCartCheckout) dispatch(clearCart());
@@ -257,7 +281,6 @@ function CheckoutContent() {
         }
 
         const razorpayOrder = response.razorpayOrder;
-        const dbOrder = response.order;
 
         if (!razorpayOrder || !razorpayOrder.id) {
           toast.error("Failed to initialize payment gateway.");

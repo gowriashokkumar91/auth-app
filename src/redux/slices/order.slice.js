@@ -22,6 +22,10 @@ export const orderApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Order"],
     }),
+    getOrderById: builder.query({
+      query: (id) => `/orders/${id}`,
+      providesTags: ["Order"],
+    }),
   }),
 });
 
@@ -29,4 +33,5 @@ export const {
   useGetMyOrdersQuery,
   useCreateOrderMutation,
   useVerifyPaymentMutation,
+  useGetOrderByIdQuery,
 } = orderApi;
