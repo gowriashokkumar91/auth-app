@@ -1,51 +1,37 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import Image from "next/image";
+import { useGetUsersQuery } from "@/redux/slices/adminApi.slice";
 
 export default function AdminCustomersPage() {
-  const [customers, setCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(true);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
 
-  const fetchCustomers = async () => {
-    try {
-      setLoading(true);
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/auth/users", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (res.ok) {
-        const data = await res.json();
-        const formattedData = data.map((user) => ({
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          profileImage: user.profileImage,
-          joined: new Date(user.createdAt).toLocaleDateString(),
-          orders: user.ordersCount || 0,
-          spent: `₹${(user.totalSpent || 0).toFixed(2)}`,
-          status: "Active", // Defaulting to active
-        }));
-        setCustomers(formattedData);
-      } else {
-        toast.error("Failed to fetch customers");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Error fetching customers");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    data: usersData,
+    error,
+    isLoading: loading,
+    refetch,
+  } = useGetUsersQuery();
 
-  useEffect(() => {
-    fetchCustomers();
-  }, []);
+  if (error) {
+    toast.error("Error fetching customers", { toastId: "fetch-users-error" });
+  }
+
+  const customers = usersData
+    ? usersData.map((user) => ({
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        profileImage: user.profileImage,
+        joined: new Date(user.createdAt).toLocaleDateString(),
+        orders: user.ordersCount || 0,
+        spent: `₹${(user.totalSpent || 0).toFixed(2)}`,
+        status: "Active", // Defaulting to active
+      }))
+    : [];
 
   const filteredCustomers = customers.filter(
     (c) =>
@@ -66,7 +52,7 @@ export default function AdminCustomersPage() {
               className="w-full sm:w-80 bg-primary/5 border border-primary/10 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
             />
             <button
-              onClick={fetchCustomers}
+              onClick={() => refetch()}
               className="bg-primary/10 hover:bg-primary/20 text-primary font-bold p-2.5 rounded-xl transition-colors shadow-sm flex items-center justify-center"
               title="Refresh Customers"
             >

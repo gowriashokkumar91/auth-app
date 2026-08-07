@@ -13,50 +13,44 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+import { useGetDashboardStatsQuery } from "@/redux/slices/adminApi.slice";
+
 export default function AdminDashboardPage() {
-  const [stats, setStats] = useState({
+  const router = useRouter();
+
+  const {
+    data: dashboardData,
+    error,
+    isLoading: loading,
+  } = useGetDashboardStatsQuery();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token || token === "null" || token === "undefined") {
+      router.push("/login");
+    }
+  }, [router]);
+
+  useEffect(() => {
+    if (error) {
+      if (error.status === 401 || error.status === 403) {
+        toast.error("Session expired. Please login again.");
+        localStorage.removeItem("token");
+        router.push("/login");
+      } else {
+        toast.error("Failed to load dashboard data");
+      }
+    }
+  }, [error, router]);
+
+  const stats = dashboardData || {
     totalRevenue: "₹0.00",
     activeUsers: 0,
     totalOrders: 0,
     refunds: 0,
     recentSales: [],
     revenueData: [],
-  });
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
-
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token || token === "null" || token === "undefined") {
-          router.push("/login");
-          return;
-        }
-
-        const res = await fetch("http://localhost:5000/api/dashboard", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setStats(data);
-        } else if (res.status === 401 || res.status === 403) {
-          toast.error("Session expired. Please login again.");
-          localStorage.removeItem("token");
-          router.push("/login");
-        } else {
-          toast.error("Failed to load dashboard data");
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchStats();
-  }, [router]);
+  };
 
   const metrics = [
     {

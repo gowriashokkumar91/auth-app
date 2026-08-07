@@ -3,55 +3,42 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useSearchParams } from "next/navigation";
+import {
+  useGetAllOrdersQuery,
+  useUpdateOrderStatusMutation,
+} from "@/redux/slices/adminApi.slice";
 
 export default function AdminOrdersPage() {
   const searchParams = useSearchParams();
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("All Orders");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const fetchOrders = async () => {
-    try {
-      setLoading(true);
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/orders", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (res.ok) {
-        const data = await res.json();
-        // Map backend fields to what the UI expects
-        const formattedData = data.map((order) => ({
-          id: order._id, // use full _id as id
-          customer: order.customerName,
-          items: order.items.reduce((acc, item) => acc + item.quantity, 0), // sum of quantities
-          total: `₹${order.totalAmount.toFixed(2)}`,
-          date: new Date(order.createdAt).toLocaleString(),
-          status: order.status,
-          rawItems: order.items, // store original items for the details view
-        }));
-        setOrders(formattedData);
-      } else {
-        toast.error("Failed to fetch orders", {
-          toastId: "fetch-orders-error",
-        });
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Error fetching orders", {
-        toastId: "fetch-orders-catch-error",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    data: ordersData,
+    error,
+    isLoading: loading,
+    refetch,
+  } = useGetAllOrdersQuery();
+  const [updateOrderStatus] = useUpdateOrderStatusMutation();
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
+  if (error) {
+    toast.error("Error fetching orders", {
+      toastId: "fetch-orders-error",
+    });
+  }
+
+  const orders = ordersData
+    ? ordersData.map((order) => ({
+        id: order._id,
+        customer: order.customerName,
+        items: order.items.reduce((acc, item) => acc + item.quantity, 0),
+        total: `₹${order.totalAmount.toFixed(2)}`,
+        date: new Date(order.createdAt).toLocaleString(),
+        status: order.status,
+        rawItems: order.items,
+      }))
+    : [];
 
   useEffect(() => {
     const orderId = searchParams.get("orderId");
@@ -73,30 +60,9 @@ export default function AdminOrdersPage() {
 
   const handleUpdateStatus = async (status) => {
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(
-        `http://localhost:5000/api/orders/${selectedOrder.id}/status`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ status }),
-        }
-      );
-
-      if (res.ok) {
-        toast.success(`Order marked as ${status}`);
-        // Update local state
-        const updatedOrders = orders.map((o) =>
-          o.id === selectedOrder.id ? { ...o, status } : o
-        );
-        setOrders(updatedOrders);
-        setSelectedOrder({ ...selectedOrder, status });
-      } else {
-        toast.error("Failed to update status");
-      }
+      await updateOrderStatus({ id: selectedOrder.id, status }).unwrap();
+      toast.success(`Order marked as ${status}`);
+      setSelectedOrder({ ...selectedOrder, status });
     } catch (error) {
       console.error(error);
       toast.error("Error updating status");
@@ -136,7 +102,7 @@ export default function AdminOrdersPage() {
               className="bg-primary/5 border border-primary/10 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 w-64"
             />
             <button
-              onClick={fetchOrders}
+              onClick={() => refetch()}
               className="bg-primary/10 hover:bg-primary/20 text-primary font-bold p-2.5 rounded-xl transition-colors shadow-sm flex items-center justify-center"
               title="Refresh Orders"
             >

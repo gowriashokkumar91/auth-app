@@ -4,32 +4,37 @@ import { Provider, useDispatch } from "react-redux";
 import { store, persistor } from "@/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { useEffect } from "react";
-import { setCredentials, logout } from "@/redux/slices/auth.slice";
+import { useState } from "react";
+import {
+  setCredentials,
+  logout,
+  useProfileQuery,
+} from "@/redux/slices/auth.slice";
 
 function AuthHydrator({ children }) {
   const dispatch = useDispatch();
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      fetch("http://localhost:5000/api/auth/profile", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-        .then((res) => {
-          if (!res.ok) throw new Error("Not authorized");
-          return res.json();
-        })
-        .then((data) => {
-          if (data && data.email) {
-            dispatch(setCredentials({ user: data, token }));
-          }
-        })
-        .catch(() => {
-          localStorage.removeItem("token");
-          dispatch(logout());
-        });
+    setToken(localStorage.getItem("token"));
+  }, []);
+
+  const { data, error } = useProfileQuery(undefined, {
+    skip: !token,
+  });
+
+  useEffect(() => {
+    if (data && data.email && token) {
+      dispatch(setCredentials({ user: data, token }));
     }
-  }, [dispatch]);
+  }, [data, token, dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      localStorage.removeItem("token");
+      dispatch(logout());
+    }
+  }, [error, dispatch]);
 
   return <>{children}</>;
 }

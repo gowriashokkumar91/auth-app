@@ -1,53 +1,39 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { toast } from "react-toastify";
+import {
+  useGetAllProductsAdminQuery,
+  useCreateProductMutation,
+  useUpdateProductMutation,
+  useDeleteProductMutation,
+  useUploadProductImageMutation,
+} from "@/redux/slices/adminApi.slice";
 
 export default function AdminProductsPage() {
-  const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [isUploading, setIsUploading] = useState(false);
-
   const [editingProductId, setEditingProductId] = useState(null);
   const [deleteConfirmId, setDeleteConfirmId] = useState(null);
 
-  // Form State
-  const defaultForm = {
-    name: "",
-    description: "",
-    category: "",
-    price: "",
-    stock: "",
-    unit: "kg",
-    image: "",
-    status: "Active",
-  };
-  const [formData, setFormData] = useState(defaultForm);
+  const {
+    data: productsData,
+    error,
+    isLoading: loading,
+    refetch,
+  } = useGetAllProductsAdminQuery();
+  const [createProduct] = useCreateProductMutation();
+  const [updateProduct] = useUpdateProductMutation();
+  const [deleteProduct] = useDeleteProductMutation();
+  const [uploadImage, { isLoading: isUploading }] =
+    useUploadProductImageMutation();
 
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch("http://localhost:5000/api/products");
-      if (res.ok) {
-        const data = await res.json();
-        setProducts(data);
-      } else {
-        toast.error("Failed to fetch products");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Error fetching products. Is backend running?");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const products = productsData || [];
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  if (error) {
+    toast.error("Error fetching products. Is backend running?");
+  }
 
   const filteredProducts = products.filter(
     (p) =>
@@ -84,28 +70,14 @@ export default function AdminProductsPage() {
     formDataUpload.append("image", file);
 
     try {
-      setIsUploading(true);
-      const res = await fetch("http://localhost:5000/api/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formDataUpload,
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        setFormData((prev) => ({ ...prev, image: data.url }));
-        toast.success("Image uploaded successfully");
-      } else {
-        const err = await res.json();
-        toast.error(`Upload failed: ${err.message}`);
-      }
+      const res = await uploadImage(formDataUpload).unwrap();
+      setFormData((prev) => ({ ...prev, image: res.url }));
+      toast.success("Image uploaded successfully");
     } catch (error) {
       console.error(error);
-      toast.error("Error uploading image");
-    } finally {
-      setIsUploading(false);
+      toast.error(
+        `Upload failed: ${error.data?.message || "Error uploading image"}`
+      );
     }
   };
 
@@ -113,39 +85,32 @@ export default function AdminProductsPage() {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      const url = editingProductId
-        ? `http://localhost:5000/api/products/${editingProductId}`
-        : "http://localhost:5000/api/products";
-      const method = editingProductId ? "PUT" : "POST";
+      const productData = {
+        ...formData,
+        price: Number(formData.price),
+        stock: Number(formData.stock),
+      };
 
-      const res = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          ...formData,
-          price: Number(formData.price),
-          stock: Number(formData.stock),
-        }),
-      });
-
-      if (res.ok) {
-        toast.success(
-          `Product ${editingProductId ? "updated" : "added"} successfully`
-        );
-        setShowAddForm(false);
-        setEditingProductId(null);
-        setFormData(defaultForm);
-        fetchProducts(); // Refresh list
+      if (editingProductId) {
+        await updateProduct({
+          id: editingProductId,
+          data: productData,
+        }).unwrap();
       } else {
-        const err = await res.json();
-        toast.error(`Failed to save product: ${err.message}`);
+        await createProduct(productData).unwrap();
       }
+
+      toast.success(
+        `Product ${editingProductId ? "updated" : "added"} successfully`
+      );
+      setShowAddForm(false);
+      setEditingProductId(null);
+      setFormData(defaultForm);
     } catch (error) {
       console.error(error);
-      toast.error("Error saving product");
+      toast.error(
+        `Failed to save product: ${error.data?.message || "Unknown error"}`
+      );
     }
   };
 
@@ -172,20 +137,8 @@ export default function AdminProductsPage() {
   const confirmDelete = async () => {
     if (!deleteConfirmId) return;
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(
-        `http://localhost:5000/api/products/${deleteConfirmId}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      if (res.ok) {
-        toast.success("Product deleted successfully");
-        fetchProducts();
-      } else {
-        toast.error("Failed to delete product");
-      }
+      await deleteProduct(deleteConfirmId).unwrap();
+      toast.success("Product deleted successfully");
     } catch (error) {
       toast.error("Error deleting product");
     } finally {

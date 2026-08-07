@@ -8,6 +8,12 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, setCredentials } from "@/redux/slices/auth.slice";
 import { toast } from "react-toastify";
+import { useProfileQuery } from "@/redux/slices/auth.slice";
+import {
+  useGetNotificationsQuery,
+  useMarkNotificationReadMutation,
+  useMarkAllNotificationsReadMutation,
+} from "@/redux/slices/adminApi.slice";
 
 export default function AdminLayout({ children }) {
   const pathname = usePathname();
@@ -16,7 +22,6 @@ export default function AdminLayout({ children }) {
 
   const [isClient, setIsClient] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-  const [isFetchingUser, setIsFetchingUser] = useState(true);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -32,36 +37,51 @@ export default function AdminLayout({ children }) {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);
 
-  useEffect(() => {
-    setIsClient(true);
-    const token = localStorage.getItem("token");
-    if (token && !user) {
-      fetch("http://localhost:5000/api/auth/profile", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-        .then((res) => {
-          if (!res.ok) throw new Error("Not authorized");
-          return res.json();
-        })
-        .then((data) => {
-          if (data && data.email) {
-            dispatch(setCredentials({ user: data, token }));
-          }
-        })
-        .catch(() => {
-          localStorage.removeItem("token");
-          dispatch(logout());
-        })
-        .finally(() => setIsFetchingUser(false));
-    } else {
-      setIsFetchingUser(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const token = isClient ? localStorage.getItem("token") : null;
   const isLogged = isAuthenticated || token;
   const isAdmin = user?.role === "admin";
+
+  const {
+    data: profileData,
+    error: profileError,
+    isLoading: isFetchingProfile,
+  } = useProfileQuery(undefined, {
+    skip: !isClient || !localStorage.getItem("token") || !!user,
+  });
+
+  const { data: notificationsData } = useGetNotificationsQuery(undefined, {
+    skip: !isAdmin || !isLogged,
+    pollingInterval: 10000,
+  });
+
+  const [markRead] = useMarkNotificationReadMutation();
+  const [markAllRead] = useMarkAllNotificationsReadMutation();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (isClient) {
+      const token = localStorage.getItem("token");
+      if (token && !user) {
+        if (profileError) {
+          localStorage.removeItem("token");
+          dispatch(logout());
+        } else if (profileData && profileData.email) {
+          dispatch(setCredentials({ user: profileData, token }));
+        }
+      }
+    }
+  }, [isClient, user, profileData, profileError, dispatch]);
+
+  useEffect(() => {
+    if (notificationsData && Array.isArray(notificationsData)) {
+      setNotifications(notificationsData);
+    }
+  }, [notificationsData]);
+
+  const isFetchingUser = !isClient || (isLogged && !user && isFetchingProfile);
 
   // Ensure only logged in admin users can see admin panel
   useEffect(() => {
@@ -76,44 +96,9 @@ export default function AdminLayout({ children }) {
     }
   }, [isClient, isLogged, isAdmin, user, router, isFetchingUser]);
 
-  useEffect(() => {
-    let intervalId;
-
-    const fetchNotifications = () => {
-      if (isAdmin && token) {
-        fetch("http://localhost:5000/api/notifications", {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-          .then((res) => (res.ok ? res.json() : []))
-          .then((data) => {
-            if (Array.isArray(data)) setNotifications(data);
-          })
-          .catch((err) => console.error("Failed to fetch notifications", err));
-      }
-    };
-
-    // Initial fetch
-    fetchNotifications();
-
-    // Set up polling every 10 seconds
-    if (isAdmin && token) {
-      intervalId = setInterval(fetchNotifications, 10000);
-    }
-
-    return () => {
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, [isAdmin, token]);
-
   const handleMarkAsRead = async (id) => {
     try {
-      await fetch(`http://localhost:5000/api/notifications/${id}/read`, {
-        method: "PUT",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setNotifications((prev) =>
-        prev.map((n) => (n._id === id ? { ...n, isRead: true } : n))
-      );
+      await markRead(id).unwrap();
     } catch (error) {
       console.error(error);
     }
@@ -121,11 +106,7 @@ export default function AdminLayout({ children }) {
 
   const handleMarkAllAsRead = async () => {
     try {
-      await fetch(`http://localhost:5000/api/notifications/read-all`, {
-        method: "PUT",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+      await markAllRead().unwrap();
     } catch (error) {
       console.error(error);
     }
