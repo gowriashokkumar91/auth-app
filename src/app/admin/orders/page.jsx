@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { toast } from "react-toastify";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import {
   useGetAllOrdersQuery,
   useUpdateOrderStatusMutation,
@@ -10,6 +10,9 @@ import {
 
 export default function AdminOrdersPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [filter, setFilter] = useState("All Orders");
   const [searchTerm, setSearchTerm] = useState("");
@@ -28,17 +31,26 @@ export default function AdminOrdersPage() {
     });
   }
 
-  const orders = ordersData
-    ? ordersData.map((order) => ({
-        id: order._id,
-        customer: order.customerName,
-        items: order.items.reduce((acc, item) => acc + item.quantity, 0),
-        total: `₹${order.totalAmount.toFixed(2)}`,
-        date: new Date(order.createdAt).toLocaleString(),
-        status: order.status,
-        rawItems: order.items,
-      }))
-    : [];
+  const orders = useMemo(() => {
+    return ordersData
+      ? ordersData.map((order) => ({
+          id: order._id,
+          customer: order.customerName,
+          items: order.items.reduce((acc, item) => acc + item.quantity, 0),
+          total: `₹${order.totalAmount.toFixed(2)}`,
+          date: new Date(order.createdAt).toLocaleString(),
+          status: order.status,
+          rawItems: order.items,
+        }))
+      : [];
+  }, [ordersData]);
+
+  const handleCloseModal = () => {
+    setSelectedOrder(null);
+    if (searchParams.has("orderId")) {
+      router.replace(pathname, { scroll: false });
+    }
+  };
 
   useEffect(() => {
     const orderId = searchParams.get("orderId");
@@ -235,7 +247,7 @@ export default function AdminOrdersPage() {
                 </p>
               </div>
               <button
-                onClick={() => setSelectedOrder(null)}
+                onClick={handleCloseModal}
                 className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-primary/60 hover:text-red-500 hover:bg-red-500/10 transition-colors shadow-sm border border-primary/10"
               >
                 <svg
@@ -369,7 +381,7 @@ export default function AdminOrdersPage() {
 
             <div className="p-4 border-t border-primary/10 bg-primary/5 flex justify-end">
               <button
-                onClick={() => setSelectedOrder(null)}
+                onClick={handleCloseModal}
                 className="px-6 py-2.5 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-colors shadow-sm"
               >
                 Close
