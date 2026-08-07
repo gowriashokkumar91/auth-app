@@ -6,9 +6,22 @@ import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
 import { useProfileQuery } from "@/redux/slices/auth.slice";
 import { useGetProductByIdQuery } from "@/redux/slices/product.slice";
-import { useCreateOrderMutation } from "@/redux/slices/order.slice";
+import {
+  useCreateOrderMutation,
+  useVerifyPaymentMutation,
+} from "@/redux/slices/order.slice";
 import { clearCart } from "@/redux/slices/cart.slice";
 import { toast } from "react-toastify";
+
+const loadRazorpayScript = () => {
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
@@ -21,6 +34,7 @@ function CheckoutContent() {
 
   const [checkoutQuantity, setCheckoutQuantity] = useState(initialQuantity);
   const [step, setStep] = useState(initialStep);
+  const [paymentMethod, setPaymentMethod] = useState("Online");
   const [isProcessing, setIsProcessing] = useState(false);
   const [isOrderSuccess, setIsOrderSuccess] = useState(false);
 
@@ -38,6 +52,7 @@ function CheckoutContent() {
 
   const cartItems = useSelector((state) => state.cart.items);
   const [createOrder] = useCreateOrderMutation();
+  const [verifyPayment] = useVerifyPaymentMutation();
 
   const isCartCheckout = !productId;
 
@@ -176,7 +191,7 @@ function CheckoutContent() {
     : 0;
   const newSubtotal = subtotal - firstOrderDiscount;
 
-  const deliveryFee = newSubtotal > 500 ? 0 : 50;
+  const deliveryFee = 0; // Temporarily removed: newSubtotal > 500 ? 0 : 50;
   const totalAmount = newSubtotal + deliveryFee;
   const totalItemCount = checkoutItems.reduce(
     (sum, item) => sum + (item.quantity || 1),
@@ -205,8 +220,11 @@ function CheckoutContent() {
       setStep(2);
       return;
     }
+
     setIsProcessing(true);
+
     try {
+      // Create the order upfront (Pending Payment if Online, Processing if COD)
       const orderPayload = {
         customerName: currentDeliveryInfo.name,
         email: currentDeliveryInfo.email,
@@ -219,15 +237,80 @@ function CheckoutContent() {
           price: item.price,
         })),
         totalAmount: totalAmount,
+        paymentMethod: paymentMethod,
       };
 
-      await createOrder(orderPayload).unwrap();
+      const response = await createOrder(orderPayload).unwrap();
 
-      if (isCartCheckout) {
-        dispatch(clearCart());
+      if (paymentMethod === "COD") {
+        if (isCartCheckout) dispatch(clearCart());
+        setIsOrderSuccess(true);
+      } else if (paymentMethod === "Online") {
+        // Handle Online Payment
+        const res = await loadRazorpayScript();
+        if (!res) {
+          toast.error(
+            "Razorpay SDK failed to load. Please check your connection."
+          );
+          setIsProcessing(false);
+          return;
+        }
+
+        const razorpayOrder = response.razorpayOrder;
+        const dbOrder = response.order;
+
+        if (!razorpayOrder || !razorpayOrder.id) {
+          toast.error("Failed to initialize payment gateway.");
+          setIsProcessing(false);
+          return;
+        }
+
+        const options = {
+          key: razorpayOrder.key_id,
+          amount: razorpayOrder.amount,
+          currency: razorpayOrder.currency,
+          name: "Sivamazhil",
+          description: "Fresh Produce Order",
+          image: "/logos.png",
+          order_id: razorpayOrder.id,
+          handler: async function (paymentResponse) {
+            try {
+              // Verify the payment
+              await verifyPayment({
+                orderId: dbOrder._id,
+                razorpay_payment_id: paymentResponse.razorpay_payment_id,
+                razorpay_signature: paymentResponse.razorpay_signature,
+              }).unwrap();
+
+              if (isCartCheckout) dispatch(clearCart());
+              setIsOrderSuccess(true);
+            } catch (err) {
+              toast.error(err?.data?.message || "Payment verification failed.");
+              setIsProcessing(false);
+            }
+          },
+          prefill: {
+            name: currentDeliveryInfo.name,
+            email: currentDeliveryInfo.email,
+            contact: currentDeliveryInfo.phone,
+          },
+          theme: {
+            color: "#4e8c1f", // matching the primary color
+          },
+          modal: {
+            ondismiss: function () {
+              setIsProcessing(false);
+            },
+          },
+        };
+
+        const paymentObject = new window.Razorpay(options);
+        paymentObject.on("payment.failed", function (failResponse) {
+          toast.error(failResponse.error.description);
+          setIsProcessing(false);
+        });
+        paymentObject.open();
       }
-
-      setIsOrderSuccess(true);
     } catch (err) {
       toast.error(err?.data?.message || "Failed to place order");
       setIsProcessing(false);
@@ -655,13 +738,51 @@ function CheckoutContent() {
                   Payment Method
                 </h2>
 
-                {/* COD Option */}
-                <div className="glass-panel rounded-2xl border-2 border-primary bg-primary/5 p-5 mb-4 relative overflow-hidden shadow-sm">
-                  <div className="absolute top-0 right-0 bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider">
-                    Selected
-                  </div>
+                {/* Online Payment Option */}
+                <div
+                  onClick={() => setPaymentMethod("Online")}
+                  className={`glass-panel cursor-pointer rounded-2xl border-2 p-5 mb-4 relative overflow-hidden shadow-sm transition-all ${paymentMethod === "Online" ? "border-primary bg-primary/5" : "border-primary/10 hover:border-primary/30 bg-white"}`}
+                >
+                  {paymentMethod === "Online" && (
+                    <div className="absolute top-0 right-0 bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider">
+                      Selected
+                    </div>
+                  )}
                   <div className="flex items-center gap-3">
-                    <div className="w-5 h-5 rounded-full border-[4px] border-primary bg-white shadow-inner"></div>
+                    <div
+                      className={`w-5 h-5 rounded-full border-[4px] shadow-inner flex items-center justify-center ${paymentMethod === "Online" ? "border-primary bg-white" : "border-primary/30"}`}
+                    >
+                      {paymentMethod === "Online" && (
+                        <div className="w-2 h-2 rounded-full bg-primary" />
+                      )}
+                    </div>
+                    <span className="text-base font-bold text-primary">
+                      Razorpay (Online Payment)
+                    </span>
+                  </div>
+                  <p className="text-sm text-primary/60 mt-2 ml-8 leading-relaxed">
+                    Pay securely using UPI, Credit/Debit Cards, or Netbanking.
+                  </p>
+                </div>
+
+                {/* COD Option */}
+                <div
+                  onClick={() => setPaymentMethod("COD")}
+                  className={`glass-panel cursor-pointer rounded-2xl border-2 p-5 mb-4 relative overflow-hidden shadow-sm transition-all ${paymentMethod === "COD" ? "border-primary bg-primary/5" : "border-primary/10 hover:border-primary/30 bg-white"}`}
+                >
+                  {paymentMethod === "COD" && (
+                    <div className="absolute top-0 right-0 bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider">
+                      Selected
+                    </div>
+                  )}
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`w-5 h-5 rounded-full border-[4px] shadow-inner flex items-center justify-center ${paymentMethod === "COD" ? "border-primary bg-white" : "border-primary/30"}`}
+                    >
+                      {paymentMethod === "COD" && (
+                        <div className="w-2 h-2 rounded-full bg-primary" />
+                      )}
+                    </div>
                     <span className="text-base font-bold text-primary">
                       Cash on Delivery (COD)
                     </span>

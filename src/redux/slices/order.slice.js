@@ -14,7 +14,19 @@ export const orderApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Order"],
     }),
+    verifyPayment: builder.mutation({
+      query: (data) => ({
+        url: "/orders/verify-payment",
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["Order"],
+    }),
   }),
 });
 
-export const { useGetMyOrdersQuery, useCreateOrderMutation } = orderApi;
+export const {
+  useGetMyOrdersQuery,
+  useCreateOrderMutation,
+  useVerifyPaymentMutation,
+} = orderApi;

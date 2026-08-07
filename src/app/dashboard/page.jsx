@@ -1376,7 +1376,12 @@ export default function DashboardPage() {
                   Payment Info
                 </h4>
                 <div className="text-sm text-primary/70 leading-relaxed space-y-1">
-                  <div>Method: Cash on Delivery</div>
+                  <div>
+                    Method:{" "}
+                    {selectedOrder.fullOrder?.razorpayOrderId
+                      ? "Razorpay Online"
+                      : "Cash on Delivery"}
+                  </div>
                   <div>Status: {selectedOrder.status}</div>
 
                   <div className="flex justify-between pt-2">

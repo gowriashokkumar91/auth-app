@@ -45,6 +45,7 @@ export default function AdminOrdersPage() {
           greensSavings: order.greensSavings || 0,
           firstOrderDiscount: order.firstOrderDiscount || 0,
           deliveryFee: order.deliveryFee || 0,
+          razorpayOrderId: order.razorpayOrderId,
         }))
       : [];
   }, [ordersData]);
@@ -360,7 +361,12 @@ export default function AdminOrdersPage() {
                     Payment Info
                   </h4>
                   <div className="text-sm text-primary/80 leading-relaxed space-y-1">
-                    <div>Method: Cash on Delivery</div>
+                    <div>
+                      Method:{" "}
+                      {selectedOrder.razorpayOrderId
+                        ? "Razorpay Online"
+                        : "Cash on Delivery"}
+                    </div>
                     <div className="flex justify-between">
                       <span>Subtotal:</span>
                       <span>₹{selectedOrder.subtotal}</span>
