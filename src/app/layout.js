@@ -17,8 +17,56 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Sivamazhil | உழவரிடமிருந்து நேரடியாக உங்கள் இல்லத்திற்கு",
-  description: "Directly from farmers to your home.",
+  metadataBase: new URL("http://localhost:3000"), // Will be the actual domain in production
+  title: "Sivamazhil | 100% Organic & Fresh Farm Produce",
+  description:
+    "உழவரிடமிருந்து நேரடியாக உங்கள் இல்லத்திற்கு. Directly from farmers to your home, ensuring maximum freshness and fair prices for our local growers.",
+  keywords: [
+    "Sivamazhil",
+    "Organic vegetables",
+    "Fresh farm produce",
+    "Farmers market online",
+    "Fresh fruits",
+    "Buy organic online",
+    "Farm to home",
+  ],
+  authors: [{ name: "Sivamazhil" }],
+  creator: "Sivamazhil",
+  publisher: "Sivamazhil",
+  openGraph: {
+    title: "Sivamazhil | Fresh Farm Produce",
+    description:
+      "Directly from farmers to your home, ensuring maximum freshness and fair prices for our local growers.",
+    url: "/",
+    siteName: "Sivamazhil",
+    images: [
+      {
+        url: "/banner.png",
+        width: 1200,
+        height: 630,
+        alt: "Sivamazhil Welcome Banner",
+      },
+    ],
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sivamazhil | Fresh Farm Produce",
+    description: "Directly from farmers to your home.",
+    images: ["/banner.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({ children }) {

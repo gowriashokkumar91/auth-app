@@ -9,7 +9,7 @@ import {
   useUpdateProfileMutation,
   useUploadProfileImageMutation,
 } from "@/redux/slices/auth.slice";
-import CartPage from "@/app/cart/page";
+import CartPage from "@/components/Cart";
 import { removeFromWishlist } from "@/redux/slices/wishlist.slice";
 import { addToCart } from "@/redux/slices/cart.slice";
 import { toast } from "react-toastify";

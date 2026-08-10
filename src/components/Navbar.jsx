@@ -340,7 +340,7 @@ export default function Navbar() {
                   )}
                 </Link>
                 <Link
-                  href="/cart"
+                  href="/dashboard?tab=cart"
                   className="relative text-primary hover:text-primary/80 transition-colors p-1"
                   title="Cart"
                 >
@@ -518,7 +518,7 @@ export default function Navbar() {
       {/* Category Sub-menu (Hidden on categories pages where sidebar is present) */}
       {!pathname?.startsWith("/categories") && (
         <div className="flex bg-secondary/30 border-t border-primary/10 w-full overflow-hidden">
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-end gap-6 sm:gap-8 py-2.5 overflow-x-auto no-scrollbar text-[12px] sm:text-[13px] font-bold text-primary/80 uppercase tracking-wider">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-start gap-6 sm:gap-8 py-2.5 overflow-x-auto no-scrollbar text-[12px] sm:text-[13px] font-bold text-primary/80 uppercase tracking-wider">
             <Link
               href="/categories/vegetables"
               className="hover:text-accent transition-colors flex items-center gap-2 whitespace-nowrap flex-shrink-0"

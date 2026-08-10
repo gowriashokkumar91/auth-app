@@ -61,7 +61,7 @@ export default function Footer() {
                 Shop All
               </Link>
               <Link
-                href="/cart"
+                href="/dashboard?tab=cart"
                 className="text-sm font-medium text-primary/80 hover:text-accent transition-colors"
               >
                 My Cart

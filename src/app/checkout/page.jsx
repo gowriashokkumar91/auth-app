@@ -80,7 +80,7 @@ function CheckoutContent() {
   useEffect(() => {
     if (isCartCheckout && cartItems.length === 0) {
       toast.error("Your cart is empty");
-      router.push("/cart");
+      router.push("/dashboard?tab=cart");
     }
   }, [isCartCheckout, cartItems.length, router]);
 
@@ -257,6 +257,10 @@ function CheckoutContent() {
           quantity: item.quantity,
           price: item.price,
         })),
+        subtotal: newSubtotal,
+        greensSavings: totalGreensSavings,
+        firstOrderDiscount: firstOrderDiscount,
+        deliveryFee: deliveryFee,
         totalAmount: totalAmount,
         paymentMethod: paymentMethod,
       };
