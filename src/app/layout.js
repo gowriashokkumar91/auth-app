@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  metadataBase: new URL("http://localhost:3000"), // Will be the actual domain in production
+  metadataBase: new URL("https://auth-app-pi-lime.vercel.app"),
   title: "Sivamazhil | 100% Organic & Fresh Farm Produce",
   description:
     "உழவரிடமிருந்து நேரடியாக உங்கள் இல்லத்திற்கு. Directly from farmers to your home, ensuring maximum freshness and fair prices for our local growers.",
@@ -41,10 +41,10 @@ export const metadata = {
     siteName: "Sivamazhil",
     images: [
       {
-        url: "/banner.png",
+        url: "/seo-banner.png",
         width: 1200,
         height: 630,
-        alt: "Sivamazhil Welcome Banner",
+        alt: "Sivamazhil Fresh Farm Produce",
       },
     ],
     locale: "en_IN",
@@ -54,7 +54,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Sivamazhil | Fresh Farm Produce",
     description: "Directly from farmers to your home.",
-    images: ["/banner.png"],
+    images: ["/seo-banner.png"],
   },
   robots: {
     index: true,
