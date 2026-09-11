@@ -7,9 +7,9 @@ export const metadata = {
 
 export default function CategoriesLayout({ children }) {
   return (
-    <div className="min-h-screen bg-background py-8 sm:py-12">
+    <div className="min-h-screen bg-background py-6 sm:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-8">
           <CategorySidebar />
           <main className="flex-1 min-w-0">{children}</main>
         </div>

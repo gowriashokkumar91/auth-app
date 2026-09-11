@@ -24,6 +24,7 @@ export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState("orders");
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showPassword, setShowPassword] = useState({
     current: false,
     new: false,
@@ -300,16 +301,14 @@ export default function DashboardPage() {
               key={product.id}
               className="glass-panel p-4 rounded-2xl flex flex-col group hover:shadow-lg transition-all border border-primary/5"
             >
-              <div className="w-full h-40 bg-primary/5 rounded-xl overflow-hidden relative mb-4 flex items-center justify-center">
-                <div className="relative w-full h-full p-2">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-sm"
-                    unoptimized
-                  />
-                </div>
+              <div className="w-full h-40 bg-primary/5 rounded-xl overflow-hidden relative mb-4">
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500 drop-shadow-sm"
+                  unoptimized
+                />
                 <button
                   onClick={() => dispatch(removeFromWishlist(product.id))}
                   className="absolute top-2 right-2 z-10 w-8 h-8 bg-white shadow-sm rounded-full flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-colors"
@@ -434,21 +433,23 @@ export default function DashboardPage() {
 
   const renderProfile = () => (
     <form onSubmit={handleProfileSave} className="space-y-6 animate-fade-in">
-      <div className="flex justify-between items-center border-b border-primary/10 pb-4">
-        <h2 className="text-2xl font-bold">My Profile</h2>
+      <div className="flex justify-between items-center border-b border-primary/10 pb-4 gap-2">
+        <h2 className="text-xl sm:text-2xl font-bold whitespace-nowrap">
+          My Profile
+        </h2>
         {isEditingProfile ? (
-          <div className="flex gap-2">
+          <div className="flex gap-1.5 sm:gap-2 shrink-0">
             <button
               type="button"
               onClick={handleEditProfileClick}
-              className="bg-primary/5 hover:bg-primary/10 text-primary px-4 py-2 rounded-xl font-bold transition-colors text-sm"
+              className="bg-primary/5 hover:bg-primary/10 text-primary px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl font-bold transition-colors text-xs sm:text-sm"
               disabled={isUpdatingProfile}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-xl font-bold transition-colors flex items-center gap-2 text-sm shadow-sm"
+              className="bg-primary hover:bg-primary/90 text-white px-4 sm:px-6 py-1.5 sm:py-2 rounded-lg sm:rounded-xl font-bold transition-colors flex items-center gap-1 sm:gap-2 text-xs sm:text-sm shadow-sm"
               disabled={isUpdatingProfile}
             >
               {isUpdatingProfile ? (
@@ -492,7 +493,7 @@ export default function DashboardPage() {
           <button
             type="button"
             onClick={handleEditProfileClick}
-            className="bg-primary/10 hover:bg-primary text-primary hover:text-white px-4 py-2 rounded-xl font-bold transition-colors flex items-center gap-2 text-sm shadow-sm"
+            className="bg-primary/10 hover:bg-primary text-primary hover:text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl font-bold transition-colors flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm shadow-sm shrink-0"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -516,7 +517,7 @@ export default function DashboardPage() {
         <div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/5 rounded-full blur-2xl"></div>
         <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-accent/5 rounded-full blur-2xl"></div>
 
-        <div className="flex flex-col md:flex-row gap-8 items-start relative z-10">
+        <div className="flex flex-col md:flex-row gap-8 items-center md:items-start relative z-10">
           {/* Avatar */}
           <div className="flex flex-col items-center gap-4">
             <div
@@ -804,54 +805,52 @@ export default function DashboardPage() {
                 </div>
               </div>
             ) : (
-              <div className="bg-transparent mt-2">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-8 gap-x-12">
-                  <div className="flex items-start gap-4">
-                    <div className="p-2.5 bg-primary/5 text-primary rounded-xl shrink-0 mt-1">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                      >
-                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                        <circle cx="12" cy="7" r="4" />
-                      </svg>
-                    </div>
-                    <div className="min-w-0 break-words">
-                      <p className="text-[11px] font-bold text-primary/40 uppercase tracking-widest mb-0.5">
+              <div className="bg-transparent mt-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4">
+                  <div className="flex items-start gap-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      className="text-primary/40 mt-1 shrink-0"
+                    >
+                      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                    <div className="min-w-0 break-words w-full">
+                      <p className="text-[8px] font-bold text-primary/40 uppercase tracking-wider mb-0.5">
                         Full Name
                       </p>
-                      <p className="font-bold text-lg text-primary/90">
+                      <p className="font-semibold text-xs text-primary/90">
                         {user?.name || "N/A"}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="p-2.5 bg-primary/5 text-primary rounded-xl shrink-0 mt-1">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                      >
-                        <rect width="20" height="16" x="2" y="4" rx="2" />
-                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                      </svg>
-                    </div>
-                    <div className="min-w-0 break-words">
-                      <p className="text-[11px] font-bold text-primary/40 uppercase tracking-widest mb-0.5">
+                  <div className="flex items-start gap-2 sm:col-span-2 xl:col-span-1">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      className="text-primary/40 mt-1 shrink-0"
+                    >
+                      <rect width="20" height="16" x="2" y="4" rx="2" />
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
+                    <div className="min-w-0 break-words w-full">
+                      <p className="text-[8px] font-bold text-primary/40 uppercase tracking-wider mb-0.5">
                         Email Address
                       </p>
                       <p
-                        className="font-bold text-lg text-primary/90 truncate max-w-full"
+                        className="font-semibold text-xs text-primary/90 break-all"
                         title={user?.email}
                       >
                         {user?.email || "N/A"}
@@ -859,74 +858,73 @@ export default function DashboardPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="p-2.5 bg-primary/5 text-primary rounded-xl shrink-0 mt-1">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                      >
-                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                      </svg>
-                    </div>
-                    <div className="min-w-0 break-words">
-                      <p className="text-[11px] font-bold text-primary/40 uppercase tracking-widest mb-0.5">
+                  <div className="flex items-start gap-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      className="text-primary/40 mt-1 shrink-0"
+                    >
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                    <div className="min-w-0 break-words w-full">
+                      <p className="text-[8px] font-bold text-primary/40 uppercase tracking-wider mb-0.5">
                         Phone Number
                       </p>
-                      <p className="font-bold text-lg text-primary/90">
+                      <p className="font-semibold text-xs text-primary/90">
                         {user?.phone || "Not Added"}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="p-2.5 bg-green-500/10 text-green-600 rounded-xl shrink-0 mt-1">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                      >
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                        <path d="m9 11 3 3L22 4" />
-                      </svg>
-                    </div>
-                    <div className="min-w-0 break-words">
-                      <p className="text-[11px] font-bold text-primary/40 uppercase tracking-widest mb-0.5">
+                  <div className="flex items-start gap-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      className="text-green-500 mt-1 shrink-0"
+                    >
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                      <path d="m9 11 3 3L22 4" />
+                    </svg>
+                    <div className="min-w-0 break-words w-full">
+                      <p className="text-[8px] font-bold text-primary/40 uppercase tracking-wider mb-0.5">
                         Account Status
                       </p>
-                      <p className="font-bold text-lg text-green-600">Active</p>
+                      <p className="font-semibold text-xs text-green-600">
+                        Active
+                      </p>
                     </div>
                   </div>
 
-                  <div className="sm:col-span-2 pt-6 border-t border-primary/5 flex items-start gap-4">
-                    <div className="p-2.5 bg-primary/5 text-primary rounded-xl shrink-0 mt-1">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                      >
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                        <circle cx="12" cy="10" r="3" />
-                      </svg>
-                    </div>
-                    <div className="min-w-0 break-words">
-                      <p className="text-[11px] font-bold text-primary/40 uppercase tracking-widest mb-1.5">
+                  <div className="sm:col-span-2 pt-3 border-t border-primary/5 flex items-start gap-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      className="text-primary/40 mt-1 shrink-0"
+                    >
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                    <div className="min-w-0 break-words w-full">
+                      <p className="text-[8px] font-bold text-primary/40 uppercase tracking-wider mb-1">
                         Shipping Address
                       </p>
                       {user?.address?.street ? (
-                        <p className="font-bold text-[15px] leading-relaxed text-primary/90 max-w-md">
+                        <p className="font-medium text-[11px] leading-relaxed text-primary/80 max-w-md">
                           {user?.address?.doorNo && `${user.address.doorNo}, `}
                           {user.address.street}
                           <br />
@@ -936,7 +934,7 @@ export default function DashboardPage() {
                           {user.address.country}
                         </p>
                       ) : (
-                        <p className="text-primary/40 italic text-sm">
+                        <p className="text-primary/40 italic text-[11px]">
                           No shipping address provided yet.
                         </p>
                       )}
@@ -1252,12 +1250,12 @@ export default function DashboardPage() {
     return (
       <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
         <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-primary/10 overflow-hidden flex flex-col max-h-[90vh]">
-          <div className="p-6 border-b border-primary/10 flex justify-between items-center bg-primary/5">
-            <div>
-              <h3 className="text-xl font-bold flex items-center gap-3">
-                Order {selectedOrder.id}
+          <div className="p-4 sm:p-6 border-b border-primary/10 flex justify-between items-start sm:items-center gap-3 bg-primary/5">
+            <div className="min-w-0">
+              <h3 className="text-lg sm:text-xl font-bold flex flex-wrap items-center gap-2 sm:gap-3">
+                <span className="break-all">Order {selectedOrder.id}</span>
                 <span
-                  className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
+                  className={`whitespace-nowrap shrink-0 px-2 py-0.5 sm:px-2.5 sm:py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider border ${
                     selectedOrder.status === "Delivered"
                       ? "bg-green-500/10 text-green-600 border-green-500/20"
                       : selectedOrder.status === "Processing"
@@ -1268,22 +1266,22 @@ export default function DashboardPage() {
                   {selectedOrder.status}
                 </span>
               </h3>
-              <p className="text-sm text-primary/70 mt-1">
+              <p className="text-xs sm:text-sm text-primary/70 mt-1">
                 Placed on {selectedOrder.date}
               </p>
             </div>
             <button
               onClick={() => setSelectedOrder(null)}
-              className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-primary/60 hover:text-red-500 hover:bg-red-500/10 transition-colors shadow-sm"
+              className="shrink-0 w-8 h-8 bg-white rounded-full flex items-center justify-center text-primary/60 hover:text-red-500 hover:bg-red-500/10 transition-colors shadow-sm border border-primary/10"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="2.5"
               >
                 <path d="M18 6 6 18" />
                 <path d="m6 6 12 12" />
@@ -1320,8 +1318,8 @@ export default function DashboardPage() {
                         <path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7" />
                       </svg>
                     </div>
-                    <div className="flex-1">
-                      <h5 className="font-bold">{item.name}</h5>
+                    <div className="flex-1 min-w-0">
+                      <h5 className="font-bold break-words">{item.name}</h5>
                       <p className="text-xs text-primary/60">
                         Qty: {item.quantity}
                       </p>
@@ -1460,21 +1458,88 @@ export default function DashboardPage() {
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-12 flex flex-col md:flex-row gap-8 items-start">
         {/* Sidebar */}
-        <aside className="w-full md:w-64 flex-shrink-0">
-          <div className="glass-panel p-4 rounded-3xl sticky top-24 border border-primary/10 shadow-lg">
-            <nav className="flex flex-col space-y-2">
+        <aside className="w-full md:w-64 flex-shrink-0 relative z-20">
+          <div className="glass-panel p-3 md:p-4 rounded-2xl md:rounded-3xl sticky top-24 border border-primary/10 shadow-lg">
+            {/* Mobile Dropdown Trigger */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden w-full flex items-center justify-between px-4 py-3 bg-primary/5 hover:bg-primary/10 transition-colors text-primary font-bold rounded-xl"
+            >
+              <span className="flex items-center gap-3 capitalize">
+                {activeTab === "cart" ? (
+                  <>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <circle cx="8" cy="21" r="1" />
+                      <circle cx="19" cy="21" r="1" />
+                      <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+                    </svg>
+                    My Cart
+                  </>
+                ) : activeTab === "password" ? (
+                  <>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    </svg>
+                    Change Password
+                  </>
+                ) : (
+                  <>
+                    {sidebarLinks.find((link) => link.id === activeTab)?.icon}
+                    {activeTab.replace("-", " ")}
+                  </>
+                )}
+              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={`transition-transform ${isMobileMenuOpen ? "rotate-180" : ""}`}
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+
+            <nav
+              className={`${isMobileMenuOpen ? "flex" : "hidden"} md:flex flex-col gap-2 mt-3 md:mt-0`}
+            >
               {sidebarLinks.map((link) => (
                 <button
                   key={link.id}
                   onClick={() => {
                     setActiveTab(link.id);
+                    setIsMobileMenuOpen(false);
                     if (typeof window !== "undefined") {
                       window.history.pushState(null, "", `?tab=${link.id}`);
                     }
                   }}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold transition-all ${
+                  className={`flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold transition-all w-full text-left ${
                     activeTab === link.id
-                      ? "bg-primary text-white shadow-md translate-x-2"
+                      ? "bg-primary text-white shadow-md md:translate-x-2"
                       : "text-primary/70 hover:bg-primary/10 hover:text-primary"
                   }`}
                 >
@@ -1485,13 +1550,14 @@ export default function DashboardPage() {
               <button
                 onClick={() => {
                   setActiveTab("cart");
+                  setIsMobileMenuOpen(false);
                   if (typeof window !== "undefined") {
                     window.history.pushState(null, "", `?tab=cart`);
                   }
                 }}
                 className={`flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold transition-all w-full text-left ${
                   activeTab === "cart"
-                    ? "bg-primary text-white shadow-md translate-x-2"
+                    ? "bg-primary text-white shadow-md md:translate-x-2"
                     : "text-primary/70 hover:bg-primary/10 hover:text-primary"
                 }`}
               >
@@ -1516,13 +1582,14 @@ export default function DashboardPage() {
               <button
                 onClick={() => {
                   setActiveTab("password");
+                  setIsMobileMenuOpen(false);
                   if (typeof window !== "undefined") {
                     window.history.pushState(null, "", `?tab=password`);
                   }
                 }}
-                className={`flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold transition-all ${
+                className={`flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold transition-all w-full text-left ${
                   activeTab === "password"
-                    ? "bg-primary text-white shadow-md translate-x-2"
+                    ? "bg-primary text-white shadow-md md:translate-x-2"
                     : "text-primary/70 hover:bg-primary/10 hover:text-primary"
                 }`}
               >
@@ -1543,7 +1610,7 @@ export default function DashboardPage() {
               <div className="my-1 border-t border-primary/10"></div>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-red-500 hover:bg-red-500/10 transition-all"
+                className="flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-red-500 hover:bg-red-500/10 transition-all w-full text-left"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -1565,7 +1632,7 @@ export default function DashboardPage() {
         </aside>
 
         {/* Main Content Area */}
-        <main className="flex-1 min-w-0">
+        <main className="flex-1 min-w-0 w-full">
           <div className="glass-panel p-6 sm:p-10 rounded-3xl min-h-[500px] border border-primary/10 shadow-lg relative overflow-hidden">
             {/* Decorative element for main content */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full blur-[50px] -z-10" />

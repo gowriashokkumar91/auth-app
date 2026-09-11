@@ -196,79 +196,85 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* Metrics Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Metrics Section */}
+      <div className="grid grid-cols-4 gap-2 sm:gap-6 w-full">
         {metrics.map((metric, idx) => (
           <div
             key={idx}
-            className="bg-white rounded-2xl p-6 shadow-sm border border-primary/10 hover:shadow-md transition-shadow"
+            className="bg-white rounded-xl sm:rounded-2xl p-1.5 sm:p-6 shadow-sm border border-primary/10 hover:shadow-xl hover:-translate-y-1 hover:border-primary/30 transition-all duration-300 group relative overflow-hidden flex flex-col justify-center items-center min-h-[70px] sm:h-auto"
           >
-            <h3 className="text-sm font-semibold text-primary/70 uppercase tracking-wider mb-2">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <h3 className="text-[7.5px] sm:text-xs font-bold text-primary/60 uppercase tracking-wider relative z-10 group-hover:text-primary/80 transition-colors text-center leading-tight">
               {metric.title}
             </h3>
-            <div className="flex items-end justify-between">
-              <span className="text-3xl font-black text-primary">
-                {metric.value}
-              </span>
-              <span
-                className={`flex items-center text-sm font-bold ${metric.trend === "up" ? "text-primary" : "text-blue-500"}`}
-              >
-                {metric.trend === "up" ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                  >
-                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
-                    <polyline points="16 7 22 7 22 13" />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                  >
-                    <polyline points="22 17 13.5 8.5 8.5 13.5 2 7" />
-                    <polyline points="16 17 22 17 22 11" />
-                  </svg>
-                )}
-                <span className="ml-1">{metric.change}</span>
-              </span>
-            </div>
+            <span className="text-[11px] sm:text-3xl font-black text-primary group-hover:scale-105 transition-transform duration-300 relative z-10 my-0.5 text-center break-all">
+              {metric.value}
+            </span>
+            <span
+              className={`flex items-center text-[7px] sm:text-sm font-bold px-1 py-0.5 rounded-sm sm:rounded-lg ${metric.trend === "up" ? "text-primary bg-primary/5" : "text-blue-500 bg-blue-500/5"} relative z-10`}
+            >
+              {metric.trend === "up" ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="8"
+                  height="8"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  className="sm:w-[14px] sm:h-[14px]"
+                >
+                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                  <polyline points="16 7 22 7 22 13" />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="8"
+                  height="8"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  className="sm:w-[14px] sm:h-[14px]"
+                >
+                  <polyline points="22 17 13.5 8.5 8.5 13.5 2 7" />
+                  <polyline points="16 17 22 17 22 11" />
+                </svg>
+              )}
+              <span className="ml-0.5">{metric.change}</span>
+            </span>
           </div>
         ))}
 
         {/* Export Report Button */}
-        <div className="flex items-center justify-center h-[100px] lg:h-full">
+        <div className="flex items-center justify-center min-h-[70px] sm:h-auto w-full">
           <button
             onClick={handleExportExcel}
-            className="group relative flex items-center gap-2.5 px-6 py-3 bg-primary text-white font-bold text-sm tracking-wide rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+            className="group relative w-full h-full flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 p-1.5 sm:px-6 sm:py-3 bg-primary text-white font-bold rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:bg-primary/90 transition-all duration-300 overflow-hidden"
           >
+            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
+              width="12"
+              height="12"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="group-hover:translate-y-0.5 transition-transform duration-300"
+              className="group-hover:-translate-y-0.5 transition-transform duration-300 relative z-10 sm:w-[18px] sm:h-[18px]"
             >
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
               <polyline points="7 10 12 15 17 10" />
               <line x1="12" x2="12" y1="15" y2="3" />
             </svg>
-            EXPORT REPORT
+            <span className="relative z-10 text-[7.5px] sm:text-sm text-center leading-tight">
+              EXPORT
+              <br className="sm:hidden" />
+              REPORT
+            </span>
           </button>
         </div>
       </div>
@@ -295,8 +301,9 @@ export default function AdminDashboardPage() {
                   dataKey="name"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: "#64748b", fontSize: 12 }}
+                  tick={{ fill: "#64748b", fontSize: 10 }}
                   dy={10}
+                  interval={0}
                 />
                 <YAxis
                   axisLine={false}
@@ -312,7 +319,12 @@ export default function AdminDashboardPage() {
                     boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
                   }}
                 />
-                <Bar dataKey="revenue" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                <Bar
+                  dataKey="revenue"
+                  fill="#3b82f6"
+                  radius={[4, 4, 0, 0]}
+                  barSize={48}
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -332,24 +344,29 @@ export default function AdminDashboardPage() {
           <div className="space-y-6 max-h-[340px] overflow-y-auto -mr-4 pr-4">
             {recentTransactions.length > 0 ? (
               recentTransactions.map((trx, idx) => (
-                <div key={idx} className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary/60 font-bold">
+                <div
+                  key={idx}
+                  className="flex items-center justify-between gap-4"
+                >
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary/60 font-bold shrink-0">
                       {trx.customer.charAt(0)}
                     </div>
-                    <div>
-                      <h4 className="text-sm font-bold text-primary">
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-sm font-bold text-primary truncate">
                         {trx.customer}
                       </h4>
-                      <p className="text-xs text-primary/60">{trx.email}</p>
+                      <p className="text-[10px] sm:text-xs text-primary/60 truncate">
+                        {trx.email}
+                      </p>
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className="text-right shrink-0">
                     <div className="font-bold text-sm text-primary">
                       {trx.amount}
                     </div>
                     <div
-                      className={`text-xs font-semibold ${
+                      className={`text-[10px] sm:text-xs font-semibold ${
                         trx.status === "Success"
                           ? "text-emerald-500"
                           : trx.status === "Pending"

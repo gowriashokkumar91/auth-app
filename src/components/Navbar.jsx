@@ -127,7 +127,7 @@ export default function Navbar() {
           )}
           <div
             ref={searchRef}
-            className="relative w-full max-w-md flex items-center flex-1"
+            className="static sm:relative w-full max-w-md flex items-center flex-1"
           >
             <form
               onSubmit={(e) => {
@@ -175,7 +175,7 @@ export default function Navbar() {
 
             {/* Suggestions Dropdown */}
             {showSuggestions && searchTerm.trim().length > 0 && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-primary/10 overflow-hidden z-50 animate-slide-up max-h-96 overflow-y-auto">
+              <div className="absolute top-[calc(100%-8px)] sm:top-full left-4 right-4 sm:left-0 sm:right-0 mt-4 sm:mt-2 bg-white rounded-xl shadow-2xl border border-primary/10 overflow-hidden z-[100] animate-slide-up max-h-[70vh] sm:max-h-96 overflow-y-auto">
                 {isFetching ? (
                   <div className="p-4 text-center text-sm text-primary/60 animate-pulse">
                     Searching...
@@ -418,6 +418,28 @@ export default function Navbar() {
                           {displayUser.email}
                         </p>
                       </div>
+                    )}
+                    {user?.role === "admin" && (
+                      <Link
+                        href="/admin"
+                        onClick={() => setShowProfileMenu(false)}
+                        className="flex items-center gap-3 px-4 py-2 text-sm font-medium hover:bg-primary/5 transition-colors text-primary w-full text-left"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+                        </svg>
+                        Admin Dashboard
+                      </Link>
                     )}
                     <Link
                       href="/dashboard"

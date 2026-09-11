@@ -58,9 +58,9 @@ export default function ProductCard({ product, simplified = false }) {
   const discountText = isGreens ? "20% OFF" : null;
 
   return (
-    <div className="group flex flex-col bg-white rounded-3xl p-4 sm:p-5 shadow-sm hover:shadow-xl hover:shadow-primary/20 transition-all duration-300 border border-primary/10 overflow-hidden relative">
+    <div className="group flex flex-col bg-white rounded-2xl sm:rounded-3xl p-2.5 sm:p-5 shadow-sm hover:shadow-xl hover:shadow-primary/20 transition-all duration-300 border border-primary/10 overflow-hidden relative">
       {discountText && (
-        <div className="absolute top-0 right-0 bg-accent text-white font-bold text-[10px] px-3 py-1 rounded-bl-xl z-10 shadow-sm">
+        <div className="absolute top-0 right-0 bg-accent text-white font-bold text-[9px] sm:text-[10px] px-2 py-0.5 sm:px-3 sm:py-1 rounded-bl-xl z-10 shadow-sm">
           {discountText}
         </div>
       )}
@@ -68,7 +68,7 @@ export default function ProductCard({ product, simplified = false }) {
         href={`/product/${product._id || product.id}`}
         className="flex flex-col flex-grow"
       >
-        <div className="w-full aspect-square rounded-2xl overflow-hidden mb-4 relative bg-white">
+        <div className="w-full aspect-square rounded-xl sm:rounded-2xl overflow-hidden mb-2 sm:mb-4 relative bg-white">
           <Image
             src={product.image}
             alt={product.name}
@@ -80,7 +80,7 @@ export default function ProductCard({ product, simplified = false }) {
         </div>
 
         <h3
-          className="text-base font-bold text-primary mb-2 leading-tight group-hover:text-accent transition-colors"
+          className="text-[13px] sm:text-base font-bold text-primary mb-1 sm:mb-2 leading-tight group-hover:text-accent transition-colors line-clamp-2"
           title={product.name}
         >
           {product.name}
@@ -90,31 +90,31 @@ export default function ProductCard({ product, simplified = false }) {
         <div className="flex items-center justify-between mb-4">
           <div className="flex flex-col">
             <div className="flex items-center gap-1">
-              <span className="text-xl font-extrabold text-primary">
+              <span className="text-sm sm:text-xl font-extrabold text-primary">
                 ₹{currentPrice}
               </span>
-              <span className="text-sm font-medium text-primary/60">
+              <span className="text-[10px] sm:text-sm font-medium text-primary/60">
                 / {product.unit}
               </span>
             </div>
             {isGreens && (
-              <span className="text-xs text-primary/50 line-through font-medium">
+              <span className="text-[9px] sm:text-xs text-primary/50 line-through font-medium">
                 ₹{originalPrice} / {product.unit}
               </span>
             )}
-            <div className="mt-1.5">
+            <div className="mt-1 sm:mt-1.5">
               {product.stock <= 0 || product.status === "Out of Stock" ? (
-                <span className="text-[10px] font-bold text-red-500 bg-red-50 border border-red-100 px-2 py-0.5 rounded">
+                <span className="text-[8px] sm:text-[10px] font-bold text-red-500 bg-red-50 border border-red-100 px-1.5 sm:px-2 py-0.5 rounded">
                   Out of Stock
                 </span>
               ) : (
-                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded">
+                <span className="text-[8px] sm:text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-1.5 sm:px-2 py-0.5 rounded">
                   {product.stock} {product.unit} available
                 </span>
               )}
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -128,15 +128,13 @@ export default function ProductCard({ product, simplified = false }) {
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="text-primary/40 hover:text-primary transition-all"
+                className="w-[14px] h-[14px] sm:w-[18px] sm:h-[18px] text-primary/40 hover:text-primary transition-all"
               >
                 <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
                 <circle cx="12" cy="12" r="3" />
@@ -151,15 +149,13 @@ export default function ProductCard({ product, simplified = false }) {
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
                 viewBox="0 0 24 24"
                 fill={isWishlisted ? "currentColor" : "none"}
                 stroke="currentColor"
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className={`${isWishlisted ? "text-primary scale-105" : "text-primary/40 hover:text-primary"} transition-all`}
+                className={`w-[14px] h-[14px] sm:w-[18px] sm:h-[18px] transition-all ${isWishlisted ? "text-primary scale-105" : "text-primary/40 hover:text-primary"}`}
               >
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
               </svg>
@@ -228,9 +224,44 @@ export default function ProductCard({ product, simplified = false }) {
               </h3>
               <div className="text-sm text-primary/70 mb-6 space-y-3 font-medium w-full">
                 {product.description ? (
-                  <p className="text-center whitespace-pre-line">
-                    {product.description}
-                  </p>
+                  <div className="space-y-2.5 text-left w-full px-2">
+                    {product.description.split("\n").map((line, idx) => {
+                      const trimmed = line.trim();
+                      if (trimmed.startsWith("*") || trimmed.startsWith("-")) {
+                        return (
+                          <div key={idx} className="flex items-start gap-2.5">
+                            <div className="flex-shrink-0 w-4 h-4 rounded-full bg-accent/20 flex items-center justify-center mt-0.5">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="10"
+                                height="10"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="text-accent"
+                              >
+                                <polyline points="20 6 9 17 4 12" />
+                              </svg>
+                            </div>
+                            <span className="text-primary/80">
+                              {trimmed.substring(1).trim()}
+                            </span>
+                          </div>
+                        );
+                      }
+                      return trimmed ? (
+                        <p
+                          key={idx}
+                          className="text-center whitespace-pre-line text-primary/80 mb-2"
+                        >
+                          {trimmed}
+                        </p>
+                      ) : null;
+                    })}
+                  </div>
                 ) : (
                   <ul className="space-y-3 text-left w-full pl-2">
                     <li className="flex items-start gap-3">

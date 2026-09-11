@@ -25,16 +25,16 @@ export default function RecentlyViewed() {
       <div className="w-full">
         <div className="flex justify-between items-end mb-6">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-primary tracking-tight">
+            <h2 className="text-xl sm:text-3xl font-extrabold text-primary tracking-tight">
               Recently Viewed
             </h2>
-            <p className="text-sm text-primary/60 font-medium mt-1">
+            <p className="text-xs sm:text-sm text-primary/60 font-medium mt-1">
               Pick up right where you left off
             </p>
           </div>
           <Link
             href="/categories"
-            className="text-accent hover:text-accent/80 font-bold text-sm flex items-center gap-1 group transition-colors"
+            className="text-accent hover:text-accent/80 font-bold text-xs sm:text-sm flex items-center gap-1 group transition-colors"
           >
             View All
             <svg
@@ -55,12 +55,12 @@ export default function RecentlyViewed() {
           </Link>
         </div>
 
-        <div className="flex gap-3 sm:gap-5 overflow-hidden">
+        <div className="flex gap-2 sm:gap-5 overflow-hidden">
           {recentlyViewedItems.slice(0, 8).map((product, idx) => (
             <Link
               href={`/product/${product._id || product.id}`}
               key={`${product.id || product._id || "rv"}-${idx}`}
-              className="min-w-[100px] sm:min-w-[150px] max-w-[100px] sm:max-w-[150px] flex-shrink-0 snap-start group cursor-pointer flex flex-col"
+              className="min-w-[85px] sm:min-w-[150px] max-w-[85px] sm:max-w-[150px] flex-shrink-0 snap-start group cursor-pointer flex flex-col"
               title={product.name}
             >
               <div className="w-full aspect-square bg-primary/5 rounded-2xl shadow-sm hover:shadow-md hover:shadow-primary/10 transition-all duration-300 border border-primary/10 overflow-hidden relative mb-2">

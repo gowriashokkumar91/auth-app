@@ -46,10 +46,10 @@ export default function CategoryMarquee() {
   return (
     <div className="w-full py-16 overflow-hidden relative">
       <div className="w-full mb-8 text-left relative z-10">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-primary mb-2">
+        <h2 className="text-2xl md:text-4xl font-extrabold text-primary mb-2">
           Explore Our Categories
         </h2>
-        <p className="text-primary/70 font-medium">
+        <p className="text-sm md:text-base text-primary/70 font-medium">
           Fresh from the farm to your table
         </p>
       </div>
@@ -63,9 +63,9 @@ export default function CategoryMarquee() {
             <Link
               href={`/categories/${category.name.toLowerCase().replace(/ & /g, "-").replace(/\s+/g, "-")}`}
               key={index}
-              className="flex flex-col items-center justify-center min-w-[120px] sm:min-w-[160px] mx-2 sm:mx-3 group cursor-pointer"
+              className="flex flex-col items-center justify-center min-w-[90px] sm:min-w-[160px] mx-2 sm:mx-3 group cursor-pointer"
             >
-              <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl overflow-hidden mb-4 shadow-lg group-hover:scale-105 group-hover:shadow-primary/30 transition-all duration-300 relative">
+              <div className="w-20 h-20 sm:w-32 sm:h-32 rounded-2xl overflow-hidden mb-4 shadow-lg group-hover:scale-105 group-hover:shadow-primary/30 transition-all duration-300 relative">
                 <Image
                   src={category.image}
                   alt={category.name}
@@ -75,7 +75,7 @@ export default function CategoryMarquee() {
                   unoptimized
                 />
               </div>
-              <span className="font-bold text-primary/90 text-sm sm:text-base group-hover:text-primary transition-colors whitespace-nowrap">
+              <span className="font-bold text-primary/90 text-[10px] sm:text-base group-hover:text-primary transition-colors whitespace-nowrap">
                 {category.name}
               </span>
             </Link>

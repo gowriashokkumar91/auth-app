@@ -146,6 +146,23 @@ export default function ProductDetailPage() {
   // Mock array for multiple images if they existed
   const images = [product.image];
 
+  const defaultHighlights = [
+    "Rich in Antioxidants",
+    "Boosts Immunity",
+    "Improves Digestion",
+    "Supports Blood Sugar Control",
+    "Promotes Bone Health",
+    "Low in Calories",
+    "Supports Healthy Skin",
+  ];
+
+  const highlights = product.description
+    ? product.description
+        .split("\n")
+        .map((line) => line.replace(/^[\*\-\•]\s*/, "").trim())
+        .filter((line) => line.length > 0)
+    : defaultHighlights;
+
   return (
     <div className="min-h-[calc(100vh-73px)] bg-background pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-8">
@@ -218,17 +235,17 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {/* Action Buttons (Mobile: Fixed bottom, Desktop: Under image) */}
-            <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-primary/10 z-50 lg:static lg:bg-transparent lg:border-t-0 lg:p-0 flex gap-8 mt-2">
+            {/* Action Buttons */}
+            <div className="flex gap-3 sm:gap-4 mt-2 w-full">
               <button
                 onClick={handleCartClick}
                 disabled={
                   product.stock <= 0 || product.status === "Out of Stock"
                 }
-                className={`flex-1 bg-white border-2 border-accent text-accent py-3.5 rounded-xl font-bold text-lg flex items-center justify-center gap-2 shadow-sm transition-colors ${
+                className={`flex-1 bg-white border-2 border-[#5B8C2A] text-[#5B8C2A] py-3.5 rounded-xl font-bold text-lg flex items-center justify-center gap-2 shadow-sm transition-colors ${
                   product.stock <= 0 || product.status === "Out of Stock"
                     ? "opacity-50 cursor-not-allowed hover:bg-white"
-                    : "hover:bg-accent/5"
+                    : "hover:bg-[#5B8C2A]/5 active:scale-[0.98]"
                 }`}
               >
                 <svg
@@ -251,10 +268,10 @@ export default function ProductDetailPage() {
                 disabled={
                   product.stock <= 0 || product.status === "Out of Stock"
                 }
-                className={`flex-1 bg-accent text-white py-3.5 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-colors ${
+                className={`flex-1 bg-[#5B8C2A] text-white py-3.5 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-all ${
                   product.stock <= 0 || product.status === "Out of Stock"
                     ? "opacity-50 cursor-not-allowed shadow-none"
-                    : "hover:bg-accent/90 shadow-lg shadow-accent/30"
+                    : "hover:bg-[#4F7942] shadow-lg shadow-[#5B8C2A]/30 active:scale-[0.98]"
                 }`}
               >
                 <svg
@@ -311,20 +328,20 @@ export default function ProductDetailPage() {
                   </div>
 
                   {/* Quantity */}
-                  <div className="flex items-center gap-4">
-                    <span className="text-sm font-extrabold text-[#5B8C2A]">
+                  <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
+                    <span className="text-[15px] font-extrabold text-[#5B8C2A] shrink-0">
                       Quantity:
                     </span>
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center border border-gray-200 rounded-xl bg-white w-fit overflow-hidden shadow-sm">
+                    <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                      <div className="flex items-center border border-gray-200 rounded-[20px] bg-white w-fit shadow-sm shrink-0">
                         <button
                           onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                          className="w-10 h-10 flex items-center justify-center text-[#5B8C2A] hover:bg-[#5B8C2A]/5 transition-colors"
+                          className="w-12 h-11 flex items-center justify-center text-[#6B934F] hover:bg-[#5B8C2A]/10 transition-colors rounded-l-[20px]"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
+                            width="14"
+                            height="14"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
@@ -334,7 +351,7 @@ export default function ProductDetailPage() {
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                           </svg>
                         </button>
-                        <span className="w-10 text-center font-extrabold text-[#4F7942] text-lg">
+                        <span className="w-8 text-center font-extrabold text-[#4F7942] text-[17px]">
                           {quantity}
                         </span>
                         <button
@@ -343,12 +360,12 @@ export default function ProductDetailPage() {
                               Math.min(product.stock || 10, quantity + 1)
                             )
                           }
-                          className="w-10 h-10 flex items-center justify-center text-[#5B8C2A] hover:bg-[#5B8C2A]/5 transition-colors"
+                          className="w-12 h-11 flex items-center justify-center text-[#6B934F] hover:bg-[#5B8C2A]/10 transition-colors rounded-r-[20px]"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
+                            width="14"
+                            height="14"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
@@ -360,7 +377,7 @@ export default function ProductDetailPage() {
                           </svg>
                         </button>
                       </div>
-                      <div className="text-sm font-bold ml-2">
+                      <div className="text-sm font-bold sm:ml-2 shrink-0">
                         {product.stock <= 0 ||
                         product.status === "Out of Stock" ? (
                           <span className="text-red-500 bg-red-50 px-2 py-1 rounded-md border border-red-100">
@@ -377,40 +394,78 @@ export default function ProductDetailPage() {
                 </div>
 
                 {/* Right Column (Shelf Life & Category) */}
-                <div className="flex flex-col gap-3 min-w-[140px] sm:pr-8">
+                <div className="flex flex-col gap-3.5 min-w-[160px] bg-[#5B8C2A]/5 border border-[#5B8C2A]/10 p-3.5 rounded-2xl sm:mr-4 shadow-sm">
                   {/* Shelf Life */}
-                  <div>
-                    {product.category === "greens" ||
-                    product.category === "vegetables" ||
-                    product.category === "fruits" ? (
-                      <>
-                        <p className="text-[10px] text-[#8FB569] font-black uppercase tracking-widest mb-1.5">
-                          Shelf life (Best Before)
-                        </p>
-                        <p className="text-sm font-extrabold text-[#4F7942]">
-                          3-5 Days (Refrigerated)
-                        </p>
-                      </>
-                    ) : (
-                      <>
-                        <p className="text-[10px] text-[#8FB569] font-black uppercase tracking-widest mb-1.5">
-                          Shelf life
-                        </p>
-                        <p className="text-sm font-extrabold text-[#4F7942]">
-                          24 Months
-                        </p>
-                      </>
-                    )}
+                  <div className="flex items-start gap-2.5">
+                    <div className="bg-white p-1.5 rounded-lg shadow-sm border border-[#5B8C2A]/10 text-[#5B8C2A] shrink-0">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                      </svg>
+                    </div>
+                    <div>
+                      {product.category === "greens" ||
+                      product.category === "vegetables" ||
+                      product.category === "fruits" ? (
+                        <>
+                          <p className="text-[9px] text-[#8FB569] font-black uppercase tracking-wider mb-0.5 leading-tight">
+                            Shelf life (Best Before)
+                          </p>
+                          <p className="text-xs font-extrabold text-[#4F7942]">
+                            3-5 Days (Refrigerated)
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-[9px] text-[#8FB569] font-black uppercase tracking-wider mb-0.5 leading-tight">
+                            Shelf life
+                          </p>
+                          <p className="text-xs font-extrabold text-[#4F7942]">
+                            24 Months
+                          </p>
+                        </>
+                      )}
+                    </div>
                   </div>
 
                   {/* Category */}
-                  <div>
-                    <p className="text-[10px] text-[#8FB569] font-black uppercase tracking-widest mb-1.5">
-                      Category
-                    </p>
-                    <p className="text-sm font-extrabold text-[#4F7942] capitalize">
-                      {product.category}
-                    </p>
+                  <div className="flex items-start gap-2.5">
+                    <div className="bg-white p-1.5 rounded-lg shadow-sm border border-[#5B8C2A]/10 text-[#5B8C2A] shrink-0">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <rect x="3" y="3" width="7" height="7" rx="1" />
+                        <rect x="14" y="3" width="7" height="7" rx="1" />
+                        <rect x="14" y="14" width="7" height="7" rx="1" />
+                        <rect x="3" y="14" width="7" height="7" rx="1" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-[9px] text-[#8FB569] font-black uppercase tracking-wider mb-0.5 leading-tight">
+                        Category
+                      </p>
+                      <p className="text-xs font-extrabold text-[#4F7942] capitalize">
+                        {product.category}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -421,14 +476,12 @@ export default function ProductDetailPage() {
                   Product Highlights
                 </h3>
 
-                {/* Highlights derived from the previous benefits modal */}
-                {product.description ? (
-                  <p className="text-sm font-medium text-[#8FB569] leading-relaxed mb-3 whitespace-pre-line">
-                    {product.description}
-                  </p>
-                ) : (
-                  <ul className="space-y-2 mb-3">
-                    <li className="flex items-start gap-2 text-[14px] font-medium text-[#6B934F]">
+                <ul className="space-y-2 mb-3">
+                  {highlights.map((highlight, idx) => (
+                    <li
+                      key={idx}
+                      className="flex items-start gap-2 text-[14px] font-medium text-[#6B934F]"
+                    >
                       <span className="text-[#3b82f6] mt-0.5">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -444,118 +497,10 @@ export default function ProductDetailPage() {
                           <polyline points="20 6 9 17 4 12" />
                         </svg>
                       </span>
-                      Rich in Antioxidants
+                      {highlight}
                     </li>
-                    <li className="flex items-start gap-2 text-[14px] font-medium text-[#6B934F]">
-                      <span className="text-[#3b82f6] mt-0.5">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="3.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <polyline points="20 6 9 17 4 12" />
-                        </svg>
-                      </span>
-                      Boosts Immunity
-                    </li>
-                    <li className="flex items-start gap-2 text-[14px] font-medium text-[#6B934F]">
-                      <span className="text-[#3b82f6] mt-0.5">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="3.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <polyline points="20 6 9 17 4 12" />
-                        </svg>
-                      </span>
-                      Improves Digestion
-                    </li>
-                    <li className="flex items-start gap-2 text-[14px] font-medium text-[#6B934F]">
-                      <span className="text-[#3b82f6] mt-0.5">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="3.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <polyline points="20 6 9 17 4 12" />
-                        </svg>
-                      </span>
-                      Supports Blood Sugar Control
-                    </li>
-                    <li className="flex items-start gap-2 text-[14px] font-medium text-[#6B934F]">
-                      <span className="text-[#3b82f6] mt-0.5">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="3.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <polyline points="20 6 9 17 4 12" />
-                        </svg>
-                      </span>
-                      Promotes Bone Health
-                    </li>
-                    <li className="flex items-start gap-2 text-[14px] font-medium text-[#6B934F]">
-                      <span className="text-[#3b82f6] mt-0.5">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="3.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <polyline points="20 6 9 17 4 12" />
-                        </svg>
-                      </span>
-                      Low in Calories
-                    </li>
-                    <li className="flex items-start gap-2 text-[14px] font-medium text-[#6B934F]">
-                      <span className="text-[#3b82f6] mt-0.5">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="3.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <polyline points="20 6 9 17 4 12" />
-                        </svg>
-                      </span>
-                      Supports Healthy Skin
-                    </li>
-                  </ul>
-                )}
+                  ))}
+                </ul>
               </div>
             </div>
           </div>

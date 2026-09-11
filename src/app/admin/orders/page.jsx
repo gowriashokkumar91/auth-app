@@ -75,14 +75,19 @@ export default function AdminOrdersPage() {
     return matchesFilter && matchesSearch;
   });
 
+  const [isUpdating, setIsUpdating] = useState(false);
+
   const handleUpdateStatus = async (status) => {
     try {
+      setIsUpdating(status);
       await updateOrderStatus({ id: selectedOrder.id, status }).unwrap();
       toast.success(`Order marked as ${status}`);
       setSelectedOrder({ ...selectedOrder, status });
     } catch (error) {
       console.error(error);
       toast.error("Error updating status");
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -111,17 +116,17 @@ export default function AdminOrdersPage() {
                 Delivered
               </button>
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-2 sm:gap-4 w-full sm:w-auto mt-2 sm:mt-0">
               <input
                 type="text"
                 placeholder="Search by Order ID or Customer..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-primary/5 border border-primary/10 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 w-64"
+                className="bg-primary/5 border border-primary/10 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 flex-1 sm:w-64"
               />
               <button
                 onClick={() => refetch()}
-                className="bg-primary/10 hover:bg-primary/20 text-primary font-bold p-2.5 rounded-xl transition-colors shadow-sm flex items-center justify-center"
+                className="bg-primary/10 hover:bg-primary/20 text-primary font-bold p-2.5 rounded-xl transition-colors shadow-sm flex items-center justify-center shrink-0"
                 title="Refresh Orders"
               >
                 <svg
@@ -242,7 +247,7 @@ export default function AdminOrdersPage() {
                     .substring(selectedOrder.id.length - 6)
                     .toUpperCase()}
                   <span
-                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
+                    className={`whitespace-nowrap shrink-0 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
                       selectedOrder.status === "Delivered"
                         ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
                         : selectedOrder.status === "Processing"
@@ -261,16 +266,16 @@ export default function AdminOrdersPage() {
               </div>
               <button
                 onClick={handleCloseModal}
-                className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-primary/60 hover:text-red-500 hover:bg-red-500/10 transition-colors shadow-sm border border-primary/10"
+                className="shrink-0 w-8 h-8 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center text-primary/60 hover:text-red-500 hover:bg-red-500/10 transition-colors shadow-sm border border-primary/10"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
+                  width="16"
+                  height="16"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="2"
+                  strokeWidth="2.5"
                 >
                   <path d="M18 6 6 18" />
                   <path d="m6 6 12 12" />
@@ -307,8 +312,10 @@ export default function AdminOrdersPage() {
                           <path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7" />
                         </svg>
                       </div>
-                      <div className="flex-1">
-                        <h5 className="font-bold text-primary">{item.name}</h5>
+                      <div className="flex-1 min-w-0">
+                        <h5 className="font-bold text-primary break-words">
+                          {item.name}
+                        </h5>
                         <p className="text-xs text-primary/60">
                           Qty: {item.quantity}
                         </p>
@@ -401,18 +408,114 @@ export default function AdminOrdersPage() {
                     <h5 className="font-bold text-sm mb-2 text-primary">
                       Update Status:
                     </h5>
-                    <div className="flex gap-2">
+                    <div className="flex gap-3">
                       <button
                         onClick={() => handleUpdateStatus("Processing")}
-                        className="px-3 py-1.5 text-xs font-bold rounded-lg bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 border border-blue-500/20 transition-colors"
+                        disabled={
+                          selectedOrder.status === "Processing" ||
+                          selectedOrder.status === "Delivered" ||
+                          isUpdating
+                        }
+                        className={`flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-xl transition-all ${
+                          selectedOrder.status === "Processing" ||
+                          selectedOrder.status === "Delivered"
+                            ? "bg-blue-500 text-white shadow-md shadow-blue-500/20 cursor-default"
+                            : "bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 border border-blue-500/20"
+                        } ${isUpdating === "Processing" ? "opacity-70 cursor-not-allowed" : ""}`}
                       >
-                        Process
+                        {isUpdating === "Processing" ? (
+                          <svg
+                            className="animate-spin h-4 w-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                        ) : selectedOrder.status === "Processing" ||
+                          selectedOrder.status === "Delivered" ? (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                        ) : null}
+                        {selectedOrder.status === "Processing" ||
+                        selectedOrder.status === "Delivered"
+                          ? "Processed"
+                          : "Process"}
                       </button>
+
                       <button
                         onClick={() => handleUpdateStatus("Delivered")}
-                        className="px-3 py-1.5 text-xs font-bold rounded-lg bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 border border-emerald-500/20 transition-colors"
+                        disabled={
+                          selectedOrder.status === "Delivered" || isUpdating
+                        }
+                        className={`flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-xl transition-all ${
+                          selectedOrder.status === "Delivered"
+                            ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/20 cursor-default"
+                            : "bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 border border-emerald-500/20"
+                        } ${isUpdating === "Delivered" ? "opacity-70 cursor-not-allowed" : ""}`}
                       >
-                        Deliver
+                        {isUpdating === "Delivered" ? (
+                          <svg
+                            className="animate-spin h-4 w-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                        ) : selectedOrder.status === "Delivered" ? (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                        ) : null}
+                        {selectedOrder.status === "Delivered"
+                          ? "Delivered"
+                          : "Deliver"}
                       </button>
                     </div>
                   </div>

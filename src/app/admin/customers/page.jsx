@@ -43,32 +43,34 @@ export default function AdminCustomersPage() {
     <>
       <div className="space-y-6 animate-fade-in">
         <div className="bg-white rounded-2xl shadow-sm border border-primary/10 overflow-hidden">
-          <div className="p-4 border-b border-primary/10 flex flex-col sm:flex-row gap-4 justify-between items-center">
-            <input
-              type="text"
-              placeholder="Search customers by name or email..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full sm:w-80 bg-primary/5 border border-primary/10 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
-            />
-            <button
-              onClick={() => refetch()}
-              className="bg-primary/10 hover:bg-primary/20 text-primary font-bold p-2.5 rounded-xl transition-colors shadow-sm flex items-center justify-center"
-              title="Refresh Customers"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
+          <div className="p-4 border-b border-primary/10 flex justify-between items-center">
+            <div className="flex gap-2 sm:gap-4 w-full">
+              <input
+                type="text"
+                placeholder="Search customers by name or email..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="bg-primary/5 border border-primary/10 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 flex-1 sm:w-80"
+              />
+              <button
+                onClick={() => refetch()}
+                className="bg-primary/10 hover:bg-primary/20 text-primary font-bold p-2.5 rounded-xl transition-colors shadow-sm flex items-center justify-center shrink-0"
+                title="Refresh Customers"
               >
-                <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
-                <path d="M21 3v5h-5" />
-              </svg>
-            </button>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                >
+                  <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+                  <path d="M21 3v5h-5" />
+                </svg>
+              </button>
+            </div>
           </div>
 
           <div className="overflow-x-auto overflow-y-auto max-h-[74vh]">

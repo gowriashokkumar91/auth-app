@@ -230,7 +230,7 @@ export default function CartPage({ isEmbedded = false }) {
                           )}
                       </div>
 
-                      <div className="flex items-center gap-3 mt-3 text-xs font-medium">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-3 text-[11px] sm:text-xs font-medium">
                         <div className="flex items-center gap-1.5 bg-primary/5 px-3 py-1.5 rounded-lg border border-primary/10">
                           <span className="text-primary/60">Unit:</span>
                           <span className="font-bold text-primary">

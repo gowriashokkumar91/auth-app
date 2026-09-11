@@ -503,7 +503,7 @@ export default function AdminLayout({ children }) {
 
               {/* Notification Dropdown */}
               {showNotifications && (
-                <div className="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-2xl border border-primary/10 overflow-hidden z-50 animate-slide-up">
+                <div className="fixed sm:absolute top-16 sm:top-full left-4 right-4 sm:left-auto sm:right-0 mt-2 sm:mt-3 sm:w-80 bg-white rounded-2xl shadow-2xl border border-primary/10 overflow-hidden z-50 animate-slide-up">
                   <div className="p-4 border-b border-primary/10 flex justify-between items-center bg-primary/5">
                     <h3 className="font-bold text-primary">Notifications</h3>
                     {unreadCount > 0 && (

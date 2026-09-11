@@ -69,7 +69,7 @@ export default function Home() {
           </div>
 
           <h1
-            className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 opacity-0 animate-slide-up leading-tight sm:leading-tight text-primary"
+            className="text-2xl min-[400px]:text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 opacity-0 animate-slide-up leading-tight sm:leading-tight text-primary"
             style={{ animationDelay: "0.2s" }}
           >
             Fresh Farm Produce, <br className="hidden sm:block" />
@@ -82,10 +82,10 @@ export default function Home() {
             className="flex flex-col items-center gap-2 mb-6 opacity-0 animate-slide-up"
             style={{ animationDelay: "0.3s" }}
           >
-            <p className="text-lg sm:text-xl text-primary/80 font-bold max-w-2xl leading-relaxed">
+            <p className="text-base sm:text-xl text-primary/80 font-bold max-w-2xl leading-relaxed">
               உழவரிடமிருந்து நேரடியாக உங்கள் இல்லத்திற்கு
             </p>
-            <p className="text-sm sm:text-base text-primary/60 font-medium max-w-2xl leading-relaxed">
+            <p className="text-xs sm:text-base text-primary/60 font-medium max-w-2xl leading-relaxed">
               Directly from farmers to your home, ensuring maximum freshness and
               fair prices for our local growers.
             </p>
@@ -97,7 +97,7 @@ export default function Home() {
           >
             <Link
               href="/categories"
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-accent hover:bg-accent/90 text-white text-base font-bold shadow-[0_8px_30px_rgba(78,140,31,0.3)] transition-all transform hover:-translate-y-1 hover:scale-105"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 sm:px-6 sm:py-3 rounded-2xl bg-accent hover:bg-accent/90 text-white text-sm sm:text-base font-bold shadow-[0_8px_30px_rgba(78,140,31,0.3)] transition-all transform hover:-translate-y-1 hover:scale-105"
             >
               Shop Now
               <svg
@@ -118,7 +118,7 @@ export default function Home() {
 
             <Link
               href="/login"
-              className="w-full sm:w-auto flex items-center justify-center px-6 py-3 rounded-2xl bg-white text-primary border-2 border-primary/10 hover:border-primary/30 text-base font-bold hover:bg-primary/5 transition-all shadow-sm"
+              className="w-full sm:w-auto flex items-center justify-center px-4 py-2.5 sm:px-6 sm:py-3 rounded-2xl bg-white text-primary border-2 border-primary/10 hover:border-primary/30 text-sm sm:text-base font-bold hover:bg-primary/5 transition-all shadow-sm"
             >
               Sign In
             </Link>
@@ -238,17 +238,17 @@ export default function Home() {
             <span className="inline-block px-3 py-1 bg-accent text-white font-bold text-[10px] sm:text-xs uppercase tracking-widest rounded-full mb-3 sm:mb-4 w-fit shadow-lg shadow-accent/20">
               Weekend Special
             </span>
-            <h2 className="text-2xl sm:text-5xl font-extrabold mb-2 sm:mb-4 leading-tight text-white drop-shadow-md">
+            <h2 className="text-xl sm:text-5xl font-extrabold mb-2 sm:mb-4 leading-tight text-white drop-shadow-md">
               Get <span className="text-accent">20% Off</span> on{" "}
               <br className="hidden sm:block" /> Organic Greens
             </h2>
-            <p className="text-xs sm:text-lg text-white/90 mb-4 sm:mb-8 max-w-md drop-shadow-sm font-medium">
+            <p className="text-[10px] sm:text-lg text-white/90 mb-4 sm:mb-8 max-w-md drop-shadow-sm font-medium">
               Freshly harvested from our farms, delivered straight to your door
               within 24 hours.
             </p>
             <Link
               href="/categories/greens"
-              className="w-fit flex items-center gap-2 px-6 sm:px-8 py-2.5 sm:py-3.5 bg-white text-primary text-sm sm:text-base font-bold rounded-full hover:bg-accent hover:text-white transition-all transform hover:-translate-y-1 shadow-xl hover:shadow-accent/40"
+              className="w-fit flex items-center gap-2 px-4 sm:px-8 py-2 sm:py-3.5 bg-white text-primary text-xs sm:text-base font-bold rounded-full hover:bg-accent hover:text-white transition-all transform hover:-translate-y-1 shadow-xl hover:shadow-accent/40"
             >
               Explore Offer
               <svg
