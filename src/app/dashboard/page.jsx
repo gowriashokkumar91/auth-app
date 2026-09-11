@@ -1633,7 +1633,7 @@ export default function DashboardPage() {
 
         {/* Main Content Area */}
         <main className="flex-1 min-w-0 w-full">
-          <div className="glass-panel p-6 sm:p-10 rounded-3xl min-h-[500px] border border-primary/10 shadow-lg relative overflow-hidden">
+          <div className="glass-panel p-6 sm:p-10 rounded-3xl border border-primary/10 shadow-lg relative overflow-hidden">
             {/* Decorative element for main content */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full blur-[50px] -z-10" />
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-primary/5 rounded-full blur-[50px] -z-10" />
