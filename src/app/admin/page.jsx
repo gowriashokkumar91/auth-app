@@ -271,9 +271,12 @@ export default function AdminDashboardPage() {
               <line x1="12" x2="12" y1="15" y2="3" />
             </svg>
             <span className="relative z-10 text-[7.5px] sm:text-sm text-center leading-tight">
-              EXPORT
-              <br className="sm:hidden" />
-              REPORT
+              <span className="sm:hidden">
+                EXPORT
+                <br />
+                REPORT
+              </span>
+              <span className="hidden sm:inline">EXPORT REPORT</span>
             </span>
           </button>
         </div>
