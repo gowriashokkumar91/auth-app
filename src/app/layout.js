@@ -34,27 +34,26 @@ export const metadata = {
   creator: "Sivamazhil",
   publisher: "Sivamazhil",
   openGraph: {
-    title: "Sivamazhil | Fresh Farm Produce",
-    description:
-      "Directly from farmers to your home, ensuring maximum freshness and fair prices for our local growers.",
+    title: "Sivamazhil | உழவரிடமிருந்து நேரடியாக உங்கள் இல்லத்திற்கு",
+    description: "Directly from farmers to your home.",
     url: "/",
     siteName: "Sivamazhil",
     images: [
       {
-        url: "/seo-banner.png",
+        url: "/logos.png",
         width: 1200,
         height: 630,
-        alt: "Sivamazhil Fresh Farm Produce",
+        alt: "Sivamazhil Logo",
       },
     ],
-    locale: "en_IN",
+    locale: "ta_IN",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sivamazhil | Fresh Farm Produce",
+    title: "Sivamazhil | உழவரிடமிருந்து நேரடியாக உங்கள் இல்லத்திற்கு",
     description: "Directly from farmers to your home.",
-    images: ["/seo-banner.png"],
+    images: ["/logos.png"],
   },
   robots: {
     index: true,
